@@ -133,3 +133,78 @@ export interface ParsedDataset {
   uploadedAt: string;
 }
 
+// ============================================================================
+// Data Cleaning & Standardization Engine Types (FastAPI Integration)
+// ============================================================================
+
+export interface BackendHealthResponse {
+  status: "healthy" | "unhealthy";
+  service: string;
+  version: string;
+  timestamp: string;
+  latencyMs?: number;
+}
+
+export interface BackendMaterialResponse {
+  raw_description: string;
+  cleaned_description: string;
+  changes: string[];
+  processing_status: "success" | "error" | "skipped";
+}
+
+export interface BackendCSVProcessSummary {
+  total_rows: number;
+  processed_rows: number;
+  success_count: number;
+  error_count: number;
+  detected_description_column: string;
+  processing_time_ms: number;
+}
+
+export interface BackendCSVProcessResponse {
+  summary: BackendCSVProcessSummary;
+  records: Array<Record<string, any>>;
+}
+
+export interface CleanedMaterialItem {
+  id: string;
+  materialCode: string;
+  cpse: string;
+  rawDescription: string;
+  cleanedDescription: string;
+  changesMade: string[];
+  processingStatus: "Cleaned Successfully" | "Requires Review" | "Unchanged" | "Processing Error";
+  isModified: boolean;
+  requiresReview: boolean;
+  category?: string;
+  unit?: string;
+  rawRow: Record<string, any>;
+}
+
+export interface CleaningBatchMetrics {
+  totalRecords: number;
+  successfullyCleaned: number;
+  recordsModified: number;
+  recordsRequiringReview: number;
+  successRate: number;
+  modifiedRate: number;
+  reviewRate: number;
+  processingTimeMs: number;
+  detectedDescriptionColumn: string;
+  sourceFileName: string;
+  sourceCPSE?: string;
+  processedAt: string;
+  isFallbackMode?: boolean;
+}
+
+export interface CleaningStoreState {
+  id: string;
+  datasetName: string;
+  metrics: CleaningBatchMetrics;
+  items: CleanedMaterialItem[];
+  rawRecordsCount: number;
+  processedAt: string;
+  status: "idle" | "processing" | "completed" | "error";
+  errorMessage?: string;
+}
+

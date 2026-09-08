@@ -2,13 +2,14 @@ import React from "react";
 import { CPSE } from "@/lib/types";
 
 interface CPSEBadgeProps {
-  cpse: CPSE;
+  cpse: CPSE | string;
   className?: string;
+  size?: "xs" | "sm" | "md" | "lg";
 }
 
-export const CPSEBadge: React.FC<CPSEBadgeProps> = ({ cpse, className = "" }) => {
-  const getCPSEStyles = (org: CPSE) => {
-    switch (org) {
+export const CPSEBadge: React.FC<CPSEBadgeProps> = ({ cpse, className = "", size = "md" }) => {
+  const getCPSEStyles = (org: string) => {
+    switch (org.toUpperCase()) {
       case "ONGC":
         return "bg-amber-50 text-amber-900 border-amber-300";
       case "BHEL":
@@ -28,11 +29,20 @@ export const CPSEBadge: React.FC<CPSEBadgeProps> = ({ cpse, className = "" }) =>
     }
   };
 
+  const sizeStyles =
+    size === "xs"
+      ? "text-[10px] px-1.5 py-0.2"
+      : size === "sm"
+      ? "text-xs px-2 py-0.5"
+      : size === "lg"
+      ? "text-sm px-3 py-1"
+      : "text-xs px-2.5 py-0.5";
+
   return (
     <span
-      className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold tracking-wide border ${getCPSEStyles(
-        cpse
-      )} ${className}`}
+      className={`inline-flex items-center rounded font-semibold tracking-wide border ${getCPSEStyles(
+        cpse || "ONGC"
+      )} ${sizeStyles} ${className}`}
     >
       {cpse}
     </span>

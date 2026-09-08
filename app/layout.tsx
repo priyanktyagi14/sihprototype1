@@ -4,6 +4,8 @@ import "./globals.css";
 import { Sidebar } from "@/components/layout/Sidebar";
 import { Header } from "@/components/layout/Header";
 
+import { ToastContainer } from "@/components/shared/Toast";
+
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -35,6 +37,9 @@ export default function RootLayout({
             </main>
           </div>
         </div>
+
+        {/* Global Floating Toast Notifications */}
+        <ToastContainer />
       </body>
     </html>
   );

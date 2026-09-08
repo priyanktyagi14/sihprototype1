@@ -2,7 +2,8 @@
 
 import React, { useState } from "react";
 import { cleanMaterialDescription, CleaningSimulationResult } from "@/lib/cleaningRules";
-import { Sparkles, ArrowRight, CheckCircle2, RotateCcw, Copy, Check, FileCode, Wand2 } from "lucide-react";
+import { cleanSingleMaterial } from "@/lib/apiClient";
+import { Sparkles, ArrowRight, CheckCircle2, RotateCcw, Copy, Check, FileCode, Wand2, Server } from "lucide-react";
 
 export const LiveCleaningSimulator: React.FC = () => {
   const samplePresets = [
@@ -10,7 +11,7 @@ export const LiveCleaningSimulator: React.FC = () => {
     { label: "BHEL Fastener", text: "STAINLESS STEEL HEXAGONAL BOLT M10 X 50MM GRADE 316" },
     { label: "NTPC Flange", text: "CS FLG WNRF 150# 4\" SCH 40 ASTM A105" },
     { label: "IOCL Valve", text: "BALL VLV 2\" 300# FLGD END BODY A216 WCB TRIM SS316" },
-    { label: "SAIL Plate", text: "MS PLT 25MM THK IS 2062 E250 BR 2500X10000MM" },
+    { label: "SAIL Plate", text: "MS PLT 25MM THK IS 2062 BR 2500X10000MM" },
     { label: "GAIL Gasket", text: "SPIRAL WOUND GASK 3\" 600# ASME B16.20 HOOPOUTERING SS316" },
   ];
 
@@ -19,11 +20,27 @@ export const LiveCleaningSimulator: React.FC = () => {
     cleanMaterialDescription("SS HEX BOLT M10X50 MM WITH NUT & 2 WSHR")
   );
   const [copied, setCopied] = useState(false);
+  const [isBackendConnected, setIsBackendConnected] = useState<boolean | null>(null);
 
-  const handleRunCleaning = (text: string) => {
+  const handleRunCleaning = async (text: string) => {
     setInputRaw(text);
-    const cleaned = cleanMaterialDescription(text);
-    setResult(cleaned);
+    const localCleaned = cleanMaterialDescription(text);
+    setResult(localCleaned);
+
+    if (!text || !text.trim()) return;
+
+    try {
+      const backendRes = await cleanSingleMaterial(text);
+      setIsBackendConnected(true);
+      if (backendRes.cleaned_description) {
+        setResult((prev) => ({
+          ...prev,
+          cleaned: backendRes.cleaned_description,
+        }));
+      }
+    } catch (_) {
+      setIsBackendConnected(false);
+    }
   };
 
   const handleCopy = () => {
