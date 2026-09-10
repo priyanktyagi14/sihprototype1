@@ -26,8 +26,11 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Register API routes
+# Register API routes (both root and /api/backend prefix for proxy rewrites)
 app.include_router(router, prefix=settings.API_PREFIX)
+if settings.API_PREFIX != "/api/backend":
+    app.include_router(router, prefix="/api/backend")
+
 
 
 @app.get("/", summary="Root Welcome Endpoint", tags=["System"])
