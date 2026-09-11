@@ -1,6 +1,6 @@
 /**
  * Centralized API Client for SIH Material Standardization FastAPI Backend.
- * Uses NEXT_PUBLIC_API_BASE_URL with fallback to http://127.0.0.1:8000.
+ * Uses NEXT_PUBLIC_API_BASE_URL with fallback to http://localhost:8000.
  */
 
 import {
@@ -11,11 +11,17 @@ import {
 } from "./types";
 
 function normalizeApiBaseUrl(url?: string): string {
-  if (!url || typeof url !== "string" || !url.trim()) {
-    return "http://127.0.0.1:8000";
+  const target = url && url.trim() ? url.trim() : (process.env.NEXT_PUBLIC_API_BASE_URL?.trim() || "http://localhost:8000");
+  let clean = target.replace(/\/+$/, "");
+
+  // If protocol is missing and it's not localhost/127.0.0.1, prepend https://
+  if (!/^https?:\/\//i.test(clean)) {
+    clean = /^localhost(:\d+)?/i.test(clean) || /^127\.0\.0\.1(:\d+)?/i.test(clean)
+      ? `http://${clean}`
+      : `https://${clean}`;
   }
-  let clean = url.trim().replace(/\/+$/, "");
-  // Remove /docs suffix if copied from Swagger
+
+  // Remove /docs suffix if copied from Swagger UI
   clean = clean.replace(/\/docs$/, "");
   // If user entered /api at the end, strip it because endpoints are /process/csv etc.
   if (clean.endsWith("/api")) {
@@ -29,9 +35,9 @@ export const API_BASE_URL = normalizeApiBaseUrl(process.env.NEXT_PUBLIC_API_BASE
 export class ApiError extends Error {
   status: number;
   isOffline: boolean;
-  details?: any;
+  details?: unknown;
 
-  constructor(message: string, status = 500, isOffline = false, details?: any) {
+  constructor(message: string, status = 500, isOffline = false, details?: unknown) {
     super(message);
     this.name = "ApiError";
     this.status = status;
@@ -74,19 +80,22 @@ export async function checkBackendHealth(timeoutMs = 3000): Promise<BackendHealt
       timestamp: data.timestamp || new Date().toISOString(),
       latencyMs: latency,
     };
-  } catch (err: any) {
+  } catch (err: unknown) {
     clearTimeout(timer);
+    const errName = err && typeof err === "object" && "name" in err ? String((err as any).name) : "";
+    const errMsg = err && typeof err === "object" && "message" in err ? String((err as any).message) : "";
+    const errStatus = err && typeof err === "object" && "status" in err ? Number((err as any).status) : 0;
     const isNetworkError =
-      err.name === "AbortError" ||
-      err.message?.includes("Failed to fetch") ||
-      err.message?.includes("NetworkError") ||
-      err.message?.includes("fetch failed");
+      errName === "AbortError" ||
+      errMsg.includes("Failed to fetch") ||
+      errMsg.includes("NetworkError") ||
+      errMsg.includes("fetch failed");
 
     throw new ApiError(
       isNetworkError
         ? `Cannot connect to FastAPI backend at ${API_BASE_URL}. Ensure uvicorn is running.`
-        : err.message || "Failed to reach health endpoint.",
-      err.status || 0,
+        : errMsg || "Failed to reach health endpoint.",
+      errStatus,
       isNetworkError
     );
   }
@@ -122,20 +131,23 @@ export async function cleanSingleMaterial(
       try {
         const errorData = await res.json();
         detailMsg = errorData.detail || errorData.message || detailMsg;
-      } catch (_) {}
+      } catch {
+        // Ignore parsing errors for non-JSON error bodies
+      }
       throw new ApiError(detailMsg, res.status);
     }
 
     return await res.json();
-  } catch (err: any) {
+  } catch (err: unknown) {
     if (err instanceof ApiError) throw err;
+    const errMsg = err && typeof err === "object" && "message" in err ? String((err as Record<string, unknown>).message) : "";
     const isOffline =
-      err.message?.includes("Failed to fetch") ||
-      err.message?.includes("fetch failed");
+      errMsg.includes("Failed to fetch") ||
+      errMsg.includes("fetch failed");
     throw new ApiError(
       isOffline
         ? `Backend unreachable at ${API_BASE_URL}`
-        : err.message || "Error processing single material",
+        : errMsg || "Error processing single material",
       0,
       isOffline
     );
@@ -169,7 +181,9 @@ export async function cleanCsvFile(
       try {
         const errorData = await res.json();
         detailMsg = errorData.detail || errorData.message || detailMsg;
-      } catch (_) {}
+      } catch {
+        // Ignore JSON parse error on non-JSON error response
+      }
 
       if (res.status === 404) {
         detailMsg = `Backend endpoint 404 Not Found at ${url.toString()}. Check that NEXT_PUBLIC_API_BASE_URL points to your backend service (not frontend) and re-deploy.`;
@@ -178,15 +192,16 @@ export async function cleanCsvFile(
     }
 
     return await res.json();
-  } catch (err: any) {
+  } catch (err: unknown) {
     if (err instanceof ApiError) throw err;
+    const errMsg = err && typeof err === "object" && "message" in err ? String((err as Record<string, unknown>).message) : "";
     const isOffline =
-      err.message?.includes("Failed to fetch") ||
-      err.message?.includes("fetch failed");
+      errMsg.includes("Failed to fetch") ||
+      errMsg.includes("fetch failed");
     throw new ApiError(
       isOffline
         ? `Backend is offline at ${API_BASE_URL}. Start the FastAPI server.`
-        : err.message || "Error during CSV batch processing",
+        : errMsg || "Error during CSV batch processing",
       0,
       isOffline
     );

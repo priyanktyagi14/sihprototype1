@@ -53,7 +53,8 @@ export async function uploadDatasetToBackendAPI(
   // const formData = new FormData();
   // formData.append("file", file);
   // formData.append("cpse", metadata?.cpse || "");
-  // const res = await fetch("/api/v1/materials/upload", { method: "POST", body: formData });
+  // const apiBase = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8000";
+  // const res = await fetch(`${apiBase}/api/v1/materials/upload`, { method: "POST", body: formData });
   // return await res.json();
 
   return new Promise((resolve) => {
