@@ -151,19 +151,19 @@ export const DataTable: React.FC<DataTableProps> = ({
 
       {/* Table Data */}
       <div className="table-container">
-        <table className="w-full text-left text-sm text-slate-600">
-          <thead className="bg-slate-50 text-xs font-semibold uppercase tracking-wider text-slate-500 border-b border-slate-200">
+        <table className="w-full text-left text-xs text-slate-700 divide-y divide-slate-200">
+          <thead className="bg-slate-50 text-[11px] font-bold uppercase tracking-wider text-slate-500 select-none border-b border-slate-200">
             <tr>
-              <th className="py-3 px-4">Material Code</th>
-              <th className="py-3 px-4">CPSE</th>
-              <th className="py-3 px-4">Raw Description</th>
-              <th className="py-3 px-4">Cleaned / Standardized Description</th>
-              <th className="py-3 px-3 text-center">Confidence</th>
-              <th className="py-3 px-3">Status</th>
-              <th className="py-3 px-4 text-right">Actions</th>
+              <th className="py-3.5 pl-5 pr-3 text-left w-24">CPSE</th>
+              <th className="py-3.5 px-3 text-left w-36">Material Code</th>
+              <th className="py-3.5 px-4 text-left">Raw Description</th>
+              <th className="py-3.5 px-4 text-left">Cleaned / Standardized Description</th>
+              <th className="py-3.5 px-3 text-center w-28">AI Confidence</th>
+              <th className="py-3.5 px-3 w-28">Status</th>
+              <th className="py-3.5 pr-5 pl-3 text-right w-24">Actions</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-slate-100">
+          <tbody className="divide-y divide-slate-100 bg-white">
             {paginatedData.length === 0 ? (
               <tr>
                 <td colSpan={7} className="py-12 text-center text-slate-400">
@@ -176,19 +176,17 @@ export const DataTable: React.FC<DataTableProps> = ({
               </tr>
             ) : (
               paginatedData.map((item) => (
-                <tr key={item.id} className="hover:bg-slate-50/80 transition-colors group">
-                  <td className="py-3 px-4 font-mono font-medium text-xs text-slate-900 whitespace-nowrap">
-                    <div className="flex items-center gap-1.5">
-                      <span>{item.materialCode}</span>
-                    </div>
-                  </td>
-                  <td className="py-3 px-4 whitespace-nowrap">
+                <tr key={item.id} className="hover:bg-purple-50/30 transition-colors group">
+                  <td className="py-3.5 pl-5 pr-3 whitespace-nowrap font-bold">
                     <CPSEBadge cpse={item.cpse} />
                   </td>
-                  <td className="py-3 px-4 max-w-[240px] truncate font-mono text-xs text-slate-700" title={item.rawDescription}>
+                  <td className="py-3.5 px-3 font-mono text-[11px] font-medium text-slate-600 whitespace-nowrap">
+                    {item.materialCode}
+                  </td>
+                  <td className="py-3.5 px-4 max-w-[240px] truncate font-mono text-[11px] text-slate-600" title={item.rawDescription}>
                     {item.rawDescription}
                   </td>
-                  <td className="py-3 px-4 max-w-[280px]">
+                  <td className="py-3.5 px-4 max-w-[280px]">
                     <div className="font-medium text-xs text-slate-900 line-clamp-2" title={item.cleanedDescription}>
                       {item.cleanedDescription}
                     </div>
@@ -205,49 +203,39 @@ export const DataTable: React.FC<DataTableProps> = ({
                       </div>
                     )}
                   </td>
-                  <td className="py-3 px-3 text-center whitespace-nowrap">
-                    <div className="inline-flex items-center gap-1">
-                      <span
-                        className={`text-xs font-semibold ${
-                          item.confidenceScore >= 90
-                            ? "text-emerald-600"
-                            : item.confidenceScore >= 75
-                            ? "text-amber-600"
-                            : "text-rose-600"
-                        }`}
-                      >
-                        {item.confidenceScore}%
-                      </span>
-                    </div>
+                  <td className="py-3.5 px-3 text-center whitespace-nowrap">
+                    <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                      {item.confidenceScore}% Match
+                    </span>
                   </td>
-                  <td className="py-3 px-3 whitespace-nowrap">
+                  <td className="py-3.5 px-3 whitespace-nowrap">
                     <StatusBadge status={item.status} />
                   </td>
-                  <td className="py-3 px-4 text-right whitespace-nowrap">
+                  <td className="py-3.5 pr-5 pl-3 text-right whitespace-nowrap text-slate-400 group-hover:text-slate-600">
                     <div className="flex items-center justify-end gap-1.5">
                       <button
                         onClick={() => setSelectedRecord(item)}
-                        className="p-1.5 text-slate-500 hover:text-indigo-600 hover:bg-indigo-50 rounded-md transition-colors"
+                        className="p-1 text-slate-500 hover:text-[#582C87] hover:bg-slate-100 rounded transition-colors"
                         title="View Record Details"
                       >
-                        <Eye className="w-4 h-4" />
+                        <Eye className="w-3.5 h-3.5" />
                       </button>
 
                       {showActions && item.status === "pending_review" && (
                         <>
                           <button
                             onClick={() => onApprove?.(item.id)}
-                            className="p-1.5 text-emerald-600 hover:bg-emerald-50 rounded-md transition-colors"
+                            className="p-1 text-emerald-600 hover:bg-emerald-50 rounded transition-colors"
                             title="Approve Cleaned Master"
                           >
-                            <Check className="w-4 h-4" />
+                            <Check className="w-3.5 h-3.5" />
                           </button>
                           <button
                             onClick={() => onReject?.(item.id)}
-                            className="p-1.5 text-rose-600 hover:bg-rose-50 rounded-md transition-colors"
+                            className="p-1 text-rose-600 hover:bg-rose-50 rounded transition-colors"
                             title="Reject Record"
                           >
-                            <X className="w-4 h-4" />
+                            <X className="w-3.5 h-3.5" />
                           </button>
                         </>
                       )}

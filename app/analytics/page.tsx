@@ -62,7 +62,7 @@ export default function AnalyticsPage() {
         </div>
         <div className="bg-white rounded-xl border border-slate-200 p-5 shadow-xs space-y-1">
           <span className="text-xs text-slate-500 font-medium uppercase tracking-wider">Participating CPSEs</span>
-          <div className="text-2xl font-bold text-indigo-600">7 Enterprises</div>
+          <div className="text-2xl font-bold text-[#582C87]">7 Enterprises</div>
           <p className="text-[11px] text-slate-400">ONGC, BHEL, NTPC, IOCL, SAIL, GAIL, CIL</p>
         </div>
         <div className="bg-white rounded-xl border border-slate-200 p-5 shadow-xs space-y-1">
@@ -72,7 +72,7 @@ export default function AnalyticsPage() {
         </div>
         <div className="bg-white rounded-xl border border-slate-200 p-5 shadow-xs space-y-1">
           <span className="text-xs text-slate-500 font-medium uppercase tracking-wider">Rule Dictionary Terms</span>
-          <div className="text-2xl font-bold text-blue-600">2,450+ Terms</div>
+          <div className="text-2xl font-bold text-[#7C3AED]">2,450+ Terms</div>
           <p className="text-[11px] text-slate-400">Across electrical, mechanical & piping</p>
         </div>
       </div>
@@ -95,16 +95,17 @@ export default function AnalyticsPage() {
             <div key={cpse.id} className="p-3.5 rounded-xl border border-slate-200 bg-slate-50/60 space-y-2">
               <div className="flex items-center justify-between">
                 <span className="font-bold text-sm text-slate-900">{cpse.id}</span>
-                <span className="text-xs font-bold text-indigo-600">{cpse.cleanedPercentage}%</span>
+                <span className="text-xs font-bold text-[#582C87]">{cpse.cleanedPercentage}%</span>
               </div>
               <div className="w-full bg-slate-200 rounded-full h-1.5 overflow-hidden">
-                <div className="bg-indigo-600 h-1.5 rounded-full" style={{ width: `${cpse.cleanedPercentage}%` }} />
+                <div className="bg-[#7C3AED] h-1.5 rounded-full" style={{ width: `${cpse.cleanedPercentage}%` }} />
               </div>
               <div className="text-[11px] text-slate-500 truncate">{cpse.name}</div>
             </div>
           ))}
         </div>
       </div>
+
 
       {/* Charts Row */}
       {isMounted && (

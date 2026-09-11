@@ -53,8 +53,8 @@ export default function AuditLogsPage() {
         description="Immutable chronological record of all AI transformations, human review approvals, rule dictionary triggers, and CPSE master modifications."
         breadcrumbs={[{ label: "Audit Logs" }]}
         badge={
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-indigo-50 text-indigo-700 border border-indigo-200">
-            <ShieldCheck className="w-3.5 h-3.5" />
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-[#F3E8FF] text-[#582C87] border border-[#EDE9FE]">
+            <ShieldCheck className="w-3.5 h-3.5 text-[#7C3AED]" />
             <span>Traceability Verified</span>
           </span>
         }
@@ -70,7 +70,7 @@ export default function AuditLogsPage() {
               placeholder="Search actor, code, rule..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full pl-9 pr-3 py-1.5 text-xs sm:text-sm rounded-lg border border-slate-200 bg-slate-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
+              className="w-full pl-9 pr-3 py-1.5 text-xs sm:text-sm rounded-lg border border-slate-200 bg-slate-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#7C3AED]/20 focus:border-[#7C3AED]"
             />
           </div>
 
@@ -80,7 +80,7 @@ export default function AuditLogsPage() {
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
               aria-label="Filter audit logs by event type"
-              className="px-2.5 py-1.5 rounded-lg border border-slate-200 bg-slate-50 text-slate-700 font-medium focus:outline-none"
+              className="px-2.5 py-1.5 rounded-lg border border-slate-200 bg-slate-50 text-slate-700 font-medium focus:outline-none focus:border-[#7C3AED]"
             >
               <option value="ALL">All Events</option>
               <option value="success">Success</option>
@@ -114,7 +114,7 @@ export default function AuditLogsPage() {
                   Actor: <strong className="text-slate-700">{log.actor}</strong>
                 </span>
                 {log.ruleApplied && (
-                  <span className="font-mono text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded border border-indigo-100">
+                  <span className="font-mono text-[#582C87] bg-[#F3E8FF] px-2 py-0.5 rounded border border-[#EDE9FE]">
                     {log.ruleApplied}
                   </span>
                 )}

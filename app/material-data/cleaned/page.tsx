@@ -15,7 +15,7 @@ export default function CleanedMaterialsPage() {
         description="Verified material master catalog with expanded abbreviations, standardized SI units, canonical Title Casing, and mapped National Material Codes (UNMC)."
         breadcrumbs={[{ label: "Material Data" }, { label: "Cleaned Materials" }]}
         badge={
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800 border border-emerald-300">
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
             {cleanedRecords.length} Active Cleaned
           </span>
         }
@@ -23,9 +23,9 @@ export default function CleanedMaterialsPage() {
           <div className="flex items-center gap-2.5">
             <Link
               href="/ai-standardization/data-cleaning"
-              className="px-3.5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-xs sm:text-sm font-semibold rounded-xl flex items-center gap-2 shadow-xs transition-colors"
+              className="px-3.5 py-2 bg-[#1E0E38] hover:bg-[#2C1752] text-white text-xs sm:text-sm font-semibold rounded-lg flex items-center gap-2 shadow-xs transition-colors"
             >
-              <Sparkles className="w-4 h-4" />
+              <Sparkles className="w-4 h-4 text-purple-300" />
               <span>Run Cleaning Workbench</span>
             </Link>
           </div>
@@ -41,3 +41,4 @@ export default function CleanedMaterialsPage() {
     </div>
   );
 }
+

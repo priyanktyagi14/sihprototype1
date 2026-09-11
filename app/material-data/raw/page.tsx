@@ -16,17 +16,17 @@ export default function RawMaterialsPage() {
           <div className="flex items-center gap-2.5">
             <Link
               href="/material-data/upload"
-              className="px-3.5 py-2 bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 text-xs sm:text-sm font-semibold rounded-xl flex items-center gap-2 shadow-xs transition-colors"
+              className="px-3.5 py-2 bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 text-xs sm:text-sm font-semibold rounded-lg flex items-center gap-2 shadow-xs transition-colors"
             >
-              <UploadCloud className="w-4 h-4 text-indigo-600" />
+              <UploadCloud className="w-4 h-4 text-[#582C87]" />
               <span>Upload New Batch</span>
             </Link>
             <Link
               href="/ai-standardization/data-cleaning"
-              className="px-3.5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-xs sm:text-sm font-semibold rounded-xl flex items-center gap-2 shadow-xs transition-colors"
+              className="px-3.5 py-2 bg-[#1E0E38] hover:bg-[#2C1752] text-white text-xs sm:text-sm font-semibold rounded-lg flex items-center gap-2 shadow-xs transition-colors"
             >
-              <Sparkles className="w-4 h-4" />
-              <span>Clean Records</span>
+              <Sparkles className="w-4 h-4 text-purple-300" />
+              <span>Start Data Cleaning</span>
             </Link>
           </div>
         }
@@ -41,3 +41,4 @@ export default function RawMaterialsPage() {
     </div>
   );
 }
+

@@ -10,10 +10,7 @@ import {
   CheckCircle2,
   AlertTriangle,
   XCircle,
-  FileUp,
   Sparkles,
-  ArrowRight,
-  Database,
 } from "lucide-react";
 import { ParsedDataset } from "@/lib/types";
 
@@ -88,88 +85,82 @@ export const FileDropzone: React.FC<FileDropzoneProps> = ({
 
       {/* Main Drag & Drop Zone */}
       {!dataset ? (
-        <div
+        <section
           onDragOver={handleDragOver}
           onDragLeave={handleDragLeave}
           onDrop={handleDrop}
           onClick={triggerBrowse}
-          className={`relative border-2 border-dashed rounded-2xl p-8 sm:p-10 text-center transition-all duration-200 cursor-pointer group select-none ${
+          className={`bg-white rounded-xl border-2 border-dashed p-10 text-center shadow-xs transition-all duration-200 flex flex-col items-center justify-center min-h-[340px] cursor-pointer group ${
             isDragOver
-              ? "border-[#7C3AED] bg-[#F3E8FF]/60 ring-4 ring-[#7C3AED]/10 scale-[1.005]"
+              ? "border-[#7C3AED] bg-[#F5F0FF] ring-4 ring-[#7C3AED]/10"
               : errorMessage
               ? "border-rose-300 bg-rose-50/30 hover:border-rose-400"
-              : "border-slate-300 bg-white hover:bg-[#FAF5FF]/50 hover:border-[#7C3AED]/60 shadow-xs"
+              : "border-indigo-200 hover:border-[#7C3AED]"
           }`}
+          data-purpose="file-upload-dropzone"
         >
-          {/* Subtle Radial Backdrop */}
-          <div className="absolute inset-0 rounded-2xl bg-gradient-to-b from-[#F3E8FF]/30 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
-
-          <div className="relative z-10 flex flex-col items-center justify-center space-y-4 max-w-md mx-auto">
-            {/* Upload Icon Circle */}
-            <div
-              className={`w-14 h-14 rounded-2xl flex items-center justify-center transition-all duration-300 ${
-                isDragOver
-                  ? "bg-[#582C87] text-white scale-110 shadow-lg shadow-[#582C87]/25"
-                  : errorMessage
-                  ? "bg-rose-100 text-rose-600"
-                  : "bg-[#F3E8FF] text-[#582C87] border border-[#EDE9FE] group-hover:bg-[#582C87] group-hover:text-white group-hover:scale-105"
-              }`}
-            >
-              {isLoading ? (
-                <RefreshCw className="w-6 h-6 animate-spin text-[#582C87]" />
-              ) : (
-                <UploadCloud className="w-6 h-6" />
-              )}
-            </div>
-
-            {/* Instruction Texts */}
-            <div className="space-y-1">
-              <h3 className="text-base sm:text-lg font-bold text-slate-900 tracking-tight">
-                {isDragOver ? "Drop dataset file to ingest" : "Drag & drop material dataset here"}
-              </h3>
-              <p className="text-xs sm:text-sm text-slate-500 font-medium">
-                Supported formats: <span className="font-semibold text-slate-700">CSV, XLSX, Parquet</span>
-              </p>
-            </div>
-
-            {/* Action Buttons */}
-            <div className="pt-2 flex flex-col sm:flex-row items-center gap-3">
-              <button
-                type="button"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  triggerBrowse();
-                }}
-                disabled={isLoading}
-                className="px-5 py-2.5 bg-[#582C87] hover:bg-[#7C3AED] active:scale-95 text-white text-xs sm:text-sm font-semibold rounded-xl shadow-xs flex items-center gap-2 transition-all cursor-pointer"
-              >
-                <FileUp className="w-4 h-4" />
-                <span>Browse Files</span>
-              </button>
-
-              <button
-                type="button"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  onLoadSample();
-                }}
-                disabled={isLoading}
-                className="px-4 py-2 bg-white hover:bg-[#FAF5FF] text-slate-700 hover:text-[#582C87] border border-[#EDE9FE] text-xs sm:text-sm font-medium rounded-xl flex items-center gap-1.5 transition-colors cursor-pointer"
-              >
-                <Sparkles className="w-3.5 h-3.5 text-[#7C3AED]" />
-                <span>Try Multi-CPSE Sample</span>
-              </button>
-            </div>
-
-            {/* Footnote */}
-            <p className="text-[11px] text-slate-400 pt-1">
-              Supports files up to 500,000 records. Validated against National Master taxonomy.
-            </p>
+          {/* Soft Purple Circle Upload Cloud Icon */}
+          <div className="w-16 h-16 rounded-2xl bg-indigo-50 border border-indigo-100 flex items-center justify-center text-[#7C3AED] mb-4 shadow-xs group-hover:scale-105 transition-transform">
+            {isLoading ? (
+              <RefreshCw className="w-8 h-8 animate-spin text-[#7C3AED]" />
+            ) : (
+              <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.8"></path>
+              </svg>
+            )}
           </div>
-        </div>
+
+          {/* Upload Titles */}
+          <h3 className="text-base font-bold text-slate-900 tracking-tight mb-1">
+            {isDragOver ? "Drop your file to upload" : "Drag & drop your file here"}
+          </h3>
+          <p className="text-xs text-slate-500 mb-6 font-medium">
+            Supported formats: <span className="font-semibold text-slate-700">CSV, XLSX</span> (Excel)
+          </p>
+
+          {/* Dual Action Buttons */}
+          <div className="flex flex-wrap items-center justify-center gap-3">
+            {/* Primary Browse Files Button */}
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                triggerBrowse();
+              }}
+              disabled={isLoading}
+              className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#7C3AED] hover:bg-[#6D28D9] text-white text-xs font-semibold rounded-lg shadow-sm shadow-purple-500/20 transition-all transform active:scale-95 cursor-pointer"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"></path>
+              </svg>
+              <span>Browse Files</span>
+            </button>
+
+            {/* Secondary Try Sample Dataset Button */}
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                onLoadSample();
+              }}
+              disabled={isLoading}
+              className="inline-flex items-center gap-2 px-4 py-2.5 bg-white hover:bg-slate-50 text-amber-600 hover:text-amber-700 border border-amber-200/80 rounded-lg text-xs font-semibold shadow-xs transition-colors cursor-pointer"
+            >
+              <svg className="w-4 h-4 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"></path>
+              </svg>
+              <span>Try Sample Dataset</span>
+            </button>
+          </div>
+
+          {/* Upload Caveat / Footer Note */}
+          <p className="text-[11px] text-slate-400 mt-8 font-normal">
+            Supports files up to 500,000 records. Parsed securely in your browser session.
+          </p>
+        </section>
       ) : (
         /* Selected File Card */
-        <div className="bg-white rounded-2xl border border-[#EDE9FE] p-5 shadow-xs transition-all animate-in fade-in">
+        <div className="bg-white rounded-xl border border-slate-200 p-5 shadow-xs transition-all animate-in fade-in">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             {/* File Details */}
             <div className="flex items-start sm:items-center gap-4">
@@ -270,4 +261,5 @@ export const FileDropzone: React.FC<FileDropzoneProps> = ({
     </div>
   );
 };
+
 

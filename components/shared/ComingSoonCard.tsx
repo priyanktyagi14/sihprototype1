@@ -29,22 +29,22 @@ export const ComingSoonCard: React.FC<ComingSoonCardProps> = ({
   return (
     <div className="space-y-6">
       {/* Header Banner */}
-      <div className="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-800 relative overflow-hidden">
-        <div className="absolute right-0 top-0 translate-x-8 -translate-y-8 w-64 h-64 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none" />
+      <div className="bg-gradient-to-r from-[#170D2B] via-[#1E0E38] to-[#170D2B] text-white rounded-2xl p-6 sm:p-8 shadow-sm border border-purple-950/60 relative overflow-hidden">
+        <div className="absolute right-0 top-0 translate-x-8 -translate-y-8 w-64 h-64 bg-purple-500/10 rounded-full blur-3xl pointer-events-none" />
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="space-y-2">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-purple-500/20 text-purple-300 border border-purple-500/30">
               <Clock className="w-3.5 h-3.5" />
               <span>Future Development Phase</span>
-              <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-pulse" />
+              <span className="w-1.5 h-1.5 rounded-full bg-purple-400 animate-pulse" />
             </div>
             <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-white">{moduleName}</h1>
-            <p className="text-slate-300 text-sm max-w-2xl leading-relaxed">{description}</p>
+            <p className="text-purple-200/80 text-sm max-w-2xl leading-relaxed">{description}</p>
           </div>
 
           <div className="shrink-0">
             <div className="px-4 py-3 bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 text-center">
-              <span className="block text-xs uppercase tracking-wider text-indigo-300 font-semibold mb-1">
+              <span className="block text-xs uppercase tracking-wider text-purple-300 font-semibold mb-1">
                 Module Status
               </span>
               <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-amber-400/20 text-amber-300 text-xs font-medium rounded-full border border-amber-400/30">
@@ -54,6 +54,7 @@ export const ComingSoonCard: React.FC<ComingSoonCardProps> = ({
           </div>
         </div>
       </div>
+
 
       {/* Planned Specs & Architecture Grid */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">

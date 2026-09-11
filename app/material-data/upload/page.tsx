@@ -416,59 +416,71 @@ export default function UploadDataPage() {
       />
 
       {/* 2. Upload Area & Configuration Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Left 2 Cols: Main Dropzone & Upload Progress */}
-        <div className="lg:col-span-2 space-y-5">
-          {/* Ingestion Source Settings */}
-          <div className="bg-white rounded-2xl border border-[#EDE9FE] p-5 shadow-xs space-y-4">
-            <div className="flex items-center justify-between pb-3 border-b border-slate-100">
-              <div className="flex items-center gap-2">
-                <Database className="w-4 h-4 text-[#582C87]" />
-                <h3 className="text-xs font-bold text-slate-900 uppercase tracking-wider">
-                  Enterprise Source Context
-                </h3>
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        {/* Left Column: Ingestion Context + Dropzone Card (approx 68% width) */}
+        <div className="lg:col-span-8 space-y-6">
+          {/* Card 1: Ingestion Source Context */}
+          <section className="bg-white rounded-xl border border-slate-200 p-5 shadow-xs" data-purpose="source-context">
+            <div className="flex items-center justify-between border-b border-slate-100 pb-3 mb-4">
+              <div className="flex items-center gap-2.5">
+                <div className="p-1.5 rounded-lg bg-indigo-50 text-[#7C3AED]">
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"></path>
+                  </svg>
+                </div>
+                <h2 className="text-xs font-bold uppercase tracking-wider text-slate-800">Ingestion Source Context</h2>
               </div>
-              <span className="text-xs text-slate-400">Participating Enterprise Mapping</span>
+              <span className="text-[11px] font-medium text-slate-400">Participating Enterprise Mapping</span>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div className="space-y-1.5">
-                <label className="block text-xs font-bold text-slate-700">
+            {/* Context Selectors */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {/* Dropdown 1: Target CPSE */}
+              <div>
+                <label className="block text-xs font-semibold text-slate-700 mb-1.5" htmlFor="target-cpse-select">
                   Target CPSE Enterprise
                 </label>
-                <select
-                  value={selectedCPSE}
-                  onChange={(e) => setSelectedCPSE(e.target.value)}
-                  className="w-full px-3 py-2 text-xs sm:text-sm bg-slate-50 border border-slate-200 rounded-xl text-slate-800 font-semibold focus:outline-none focus:ring-2 focus:ring-[#7C3AED]/20 focus:border-[#7C3AED]"
-                >
-                  {CPSE_PROFILES.map((c) => (
-                    <option key={c.id} value={c.id}>
-                      {c.id} — {c.name}
-                    </option>
-                  ))}
-                </select>
+                <div className="relative">
+                  <select
+                    id="target-cpse-select"
+                    value={selectedCPSE}
+                    onChange={(e) => setSelectedCPSE(e.target.value)}
+                    className="w-full text-xs bg-slate-50/50 border border-slate-200 rounded-lg py-2.5 pl-3 pr-8 text-slate-800 font-medium focus:ring-2 focus:ring-[#7C3AED] focus:border-[#7C3AED] focus:bg-white transition-colors cursor-pointer"
+                  >
+                    <option value="ONGC">ONGC — Oil and Natural Gas Corporation</option>
+                    <option value="BHEL">BHEL — Bharat Heavy Electricals Limited</option>
+                    <option value="NTPC">NTPC — National Thermal Power Corporation</option>
+                    <option value="IOCL">IOCL — Indian Oil Corporation Limited</option>
+                    <option value="SAIL">SAIL — Steel Authority of India Limited</option>
+                    <option value="GAIL">GAIL — Gas Authority of India Limited</option>
+                    <option value="CIL">CIL — Coal India Limited</option>
+                  </select>
+                </div>
               </div>
 
-              <div className="space-y-1.5">
-                <label className="block text-xs font-bold text-slate-700">
+              {/* Dropdown 2: ERP Format */}
+              <div>
+                <label className="block text-xs font-semibold text-slate-700 mb-1.5" htmlFor="erp-format-select">
                   Source ERP Export Format
                 </label>
-                <select
-                  value={erpSystem}
-                  onChange={(e) => setErpSystem(e.target.value)}
-                  className="w-full px-3 py-2 text-xs sm:text-sm bg-slate-50 border border-slate-200 rounded-xl text-slate-800 font-medium focus:outline-none focus:ring-2 focus:ring-[#7C3AED]/20 focus:border-[#7C3AED]"
-                >
-                  <option value="SAP ECC / S4HANA (MARA/MAKT)">SAP ECC / S4HANA (MARA/MAKT)</option>
-                  <option value="Oracle ERP Cloud / EBS">Oracle ERP Cloud / EBS</option>
-                  <option value="IBM Maximo Asset Management">IBM Maximo Asset Management</option>
-                  <option value="Custom In-house CPSE DB">Custom In-house CPSE DB</option>
-                  <option value="Standard Flat Dump">Standard Flat CSV / Excel</option>
-                </select>
+                <div className="relative">
+                  <select
+                    id="erp-format-select"
+                    value={erpSystem}
+                    onChange={(e) => setErpSystem(e.target.value)}
+                    className="w-full text-xs bg-slate-50/50 border border-slate-200 rounded-lg py-2.5 pl-3 pr-8 text-slate-800 font-medium focus:ring-2 focus:ring-[#7C3AED] focus:border-[#7C3AED] focus:bg-white transition-colors cursor-pointer"
+                  >
+                    <option value="SAP ECC / S4HANA (MARA/MAKT)">SAP ECC / S4HANA (MARA/MAKT)</option>
+                    <option value="Oracle ERP Cloud (MTL_SYSTEM_ITEMS)">Oracle ERP Cloud (MTL_SYSTEM_ITEMS)</option>
+                    <option value="Custom UNMC Excel Template">Custom UNMC Excel Template</option>
+                    <option value="Raw Tabular CSV (Generic)">Raw Tabular CSV (Generic)</option>
+                  </select>
+                </div>
               </div>
             </div>
-          </div>
+          </section>
 
-          {/* Drag & Drop Box & File Validation */}
+          {/* Card 2: Drag & Drop Dropzone Card */}
           <FileDropzone
             onFileSelected={handleFileSelected}
             onLoadSample={handleLoadSample}
@@ -489,64 +501,95 @@ export default function UploadDataPage() {
           )}
         </div>
 
-        {/* Right 1 Col: Expected Schema Guidelines & Info Card */}
-        <div className="space-y-5">
-          {/* Expected Headers Guidelines */}
-          <div className="bg-white rounded-2xl border border-[#EDE9FE] p-5 shadow-xs space-y-3.5">
-            <h4 className="text-xs font-bold uppercase tracking-wider text-slate-700 pb-2 border-b border-slate-100 flex items-center justify-between">
-              <span>Expected Schema Panel</span>
-              <span className="text-[10px] text-[#582C87] bg-[#F3E8FF] px-2 py-0.5 rounded-full font-bold border border-[#EDE9FE]">
-                Real-Time Validation
+        {/* Right Column: Expected Column Format & Alias Info (approx 32% width) */}
+        <div className="lg:col-span-4 space-y-5">
+          {/* Expected Column Format Card */}
+          <section className="bg-white rounded-xl border border-slate-200 p-5 shadow-xs" data-purpose="expected-columns">
+            <div className="flex items-center justify-between border-b border-slate-100 pb-3 mb-3">
+              <h2 className="text-xs font-bold uppercase tracking-wider text-slate-800">Expected Column Format</h2>
+              <span className="px-2 py-0.5 text-[10px] font-bold bg-[#F3E8FF] text-[#582C87] rounded border border-[#EDE9FE] uppercase tracking-wide">
+                Smart Detection
               </span>
-            </h4>
+            </div>
 
-            <div className="space-y-2 text-xs">
-              <div className="p-2.5 rounded-xl bg-purple-50/50 border border-[#EDE9FE] space-y-0.5">
-                <div className="flex items-center justify-between">
-                  <span className="font-mono font-bold text-[#582C87]">material_description</span>
-                  <span className="text-[10px] text-rose-600 font-bold uppercase">Required</span>
+            {/* Column Requirements List */}
+            <div className="divide-y divide-slate-100">
+              {/* Column 1: material_description (REQUIRED) */}
+              <div className="py-3 flex items-start justify-between gap-2">
+                <div>
+                  <span className="font-mono text-xs font-semibold text-slate-800 block">material_description</span>
+                  <p className="text-[11px] text-slate-500 mt-0.5">Legacy unstructured text string</p>
                 </div>
-                <p className="text-slate-500 text-[11px]">Legacy unstructured text string</p>
+                <span className="px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider bg-rose-50 text-rose-600 border border-rose-200/60 rounded">
+                  Required
+                </span>
               </div>
 
-              <div className="p-2.5 rounded-xl bg-slate-50 border border-slate-100 space-y-0.5">
-                <div className="flex items-center justify-between">
-                  <span className="font-mono font-bold text-slate-900">material_code</span>
-                  <span className="text-[10px] text-slate-500 font-medium">Standard / Auto-ID</span>
+              {/* Column 2: material_code (Or Auto-ID) */}
+              <div className="py-3 flex items-start justify-between gap-2">
+                <div>
+                  <span className="font-mono text-xs font-semibold text-slate-800 block">material_code</span>
+                  <p className="text-[11px] text-slate-500 mt-0.5">Unique legacy ID (e.g. ONG-1001, BHL-2001)</p>
                 </div>
-                <p className="text-slate-500 text-[11px]">Unique legacy ID (e.g. ONG-1001, BHL-2001)</p>
+                <span className="text-[10px] font-semibold text-amber-600 whitespace-nowrap pt-0.5">
+                  Or Auto-ID
+                </span>
               </div>
 
-              <div className="p-2.5 rounded-xl bg-slate-50 border border-slate-100 space-y-0.5">
-                <div className="flex items-center justify-between">
-                  <span className="font-mono font-bold text-slate-900">unit</span>
-                  <span className="text-[10px] text-slate-500">Optional</span>
+              {/* Column 3: cpse_name (Optional) */}
+              <div className="py-3 flex items-start justify-between gap-2">
+                <div>
+                  <span className="font-mono text-xs font-semibold text-slate-800 block">cpse_name</span>
+                  <p className="text-[11px] text-slate-500 mt-0.5">Participating CPSE name (e.g. ONGC, BHEL)</p>
                 </div>
-                <p className="text-slate-500 text-[11px]">Legacy UOM (e.g. NOS, PCS, MTR, KG)</p>
+                <span className="text-[10px] font-medium text-slate-400 whitespace-nowrap pt-0.5">
+                  Optional
+                </span>
               </div>
 
-              <div className="p-2.5 rounded-xl bg-slate-50 border border-slate-100 space-y-0.5">
-                <div className="flex items-center justify-between">
-                  <span className="font-mono font-bold text-slate-900">spec</span>
-                  <span className="text-[10px] text-slate-500">Optional</span>
+              {/* Column 4: specification (Optional) */}
+              <div className="py-3 flex items-start justify-between gap-2">
+                <div>
+                  <span className="font-mono text-xs font-semibold text-slate-800 block">specification</span>
+                  <p className="text-[11px] text-slate-500 mt-0.5">Grade, dimension, rating (e.g. SS304, CL150)</p>
                 </div>
-                <p className="text-slate-500 text-[11px]">Grade, dimension, rating (e.g. SS304, CL150)</p>
+                <span className="text-[10px] font-medium text-slate-400 whitespace-nowrap pt-0.5">
+                  Optional
+                </span>
+              </div>
+
+              {/* Column 5: unit (Optional) */}
+              <div className="py-3 flex items-start justify-between gap-2">
+                <div>
+                  <span className="font-mono text-xs font-semibold text-slate-800 block">unit</span>
+                  <p className="text-[11px] text-slate-500 mt-0.5">Legacy UOM (e.g. NOS, PCS, MTR, KG)</p>
+                </div>
+                <span className="text-[10px] font-medium text-slate-400 whitespace-nowrap pt-0.5">
+                  Optional
+                </span>
               </div>
             </div>
-          </div>
+          </section>
 
-          {/* Smart Pipeline Note */}
-          <div className="p-4 rounded-2xl bg-[#FAF5FF] border border-[#EDE9FE] text-[#582C87] text-xs space-y-2">
-            <div className="flex items-center gap-2 font-bold text-[#582C87]">
-              <Sparkles className="w-4 h-4 text-[#7C3AED]" />
-              <span>Automated Alias Recognition</span>
+          {/* Card 2: Automated Alias Recognition Callout */}
+          <section className="bg-gradient-to-br from-indigo-50/70 to-purple-50/40 rounded-xl border border-indigo-100/90 p-4" data-purpose="alias-recognition-callout">
+            <div className="flex items-start gap-3">
+              <div className="p-1 rounded-md text-[#7C3AED] mt-0.5">
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"></path>
+                </svg>
+              </div>
+              <div className="space-y-1">
+                <h4 className="text-xs font-bold text-slate-900 tracking-tight">Automated Alias Recognition</h4>
+                <p className="text-[11px] text-slate-600 leading-relaxed">
+                  The ingestion engine automatically maps SAP (<span className="font-mono font-medium text-slate-700">MATNR, MAKTX, MEINS</span>) and Oracle ERP headers to unified national standard fields.
+                </p>
+              </div>
             </div>
-            <p className="text-[11px] leading-relaxed text-slate-600">
-              The ingestion engine automatically maps SAP (<code>MATNR</code>, <code>MAKTX</code>, <code>MEINS</code>) and Oracle ERP headers to unified national standard fields.
-            </p>
-          </div>
+          </section>
         </div>
       </div>
+
 
       {/* Render Data Inspection Sections only when a dataset is loaded */}
       {dataset && (

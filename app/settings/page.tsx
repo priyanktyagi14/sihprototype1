@@ -46,7 +46,7 @@ export default function SettingsPage() {
         actions={
           <button
             onClick={handleSave}
-            className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs sm:text-sm font-semibold flex items-center gap-2 shadow-xs transition-colors"
+            className="px-4 py-2 bg-[#1E0E38] hover:bg-[#2C1752] text-white rounded-lg text-xs sm:text-sm font-semibold flex items-center gap-2 shadow-xs transition-colors"
           >
             <Save className="w-4 h-4" />
             <span>Save Configuration</span>
@@ -68,7 +68,7 @@ export default function SettingsPage() {
             onClick={() => setActiveTab("cpse")}
             className={`px-5 py-3 border-b-2 flex items-center gap-2 whitespace-nowrap transition-colors ${
               activeTab === "cpse"
-                ? "border-indigo-600 text-indigo-700 bg-white font-semibold"
+                ? "border-[#7C3AED] text-[#582C87] bg-white font-semibold"
                 : "border-transparent text-slate-600 hover:text-slate-900"
             }`}
           >
@@ -80,7 +80,7 @@ export default function SettingsPage() {
             onClick={() => setActiveTab("abbr")}
             className={`px-5 py-3 border-b-2 flex items-center gap-2 whitespace-nowrap transition-colors ${
               activeTab === "abbr"
-                ? "border-indigo-600 text-indigo-700 bg-white font-semibold"
+                ? "border-[#7C3AED] text-[#582C87] bg-white font-semibold"
                 : "border-transparent text-slate-600 hover:text-slate-900"
             }`}
           >
@@ -92,7 +92,7 @@ export default function SettingsPage() {
             onClick={() => setActiveTab("units")}
             className={`px-5 py-3 border-b-2 flex items-center gap-2 whitespace-nowrap transition-colors ${
               activeTab === "units"
-                ? "border-indigo-600 text-indigo-700 bg-white font-semibold"
+                ? "border-[#7C3AED] text-[#582C87] bg-white font-semibold"
                 : "border-transparent text-slate-600 hover:text-slate-900"
             }`}
           >
@@ -104,7 +104,7 @@ export default function SettingsPage() {
             onClick={() => setActiveTab("thresholds")}
             className={`px-5 py-3 border-b-2 flex items-center gap-2 whitespace-nowrap transition-colors ${
               activeTab === "thresholds"
-                ? "border-indigo-600 text-indigo-700 bg-white font-semibold"
+                ? "border-[#7C3AED] text-[#582C87] bg-white font-semibold"
                 : "border-transparent text-slate-600 hover:text-slate-900"
             }`}
           >
