@@ -30,7 +30,7 @@ import {
   saveCleaningResults,
   transformBackendResponseToCleaningState,
 } from "@/lib/cleaningStore";
-import { cleanMaterialDescription } from "@/lib/cleaningRules";
+import { cleanMaterialDescription, clusterAndAssignNationalCodes } from "@/lib/cleaningRules";
 import { ParsedDataset, CPSE, CleaningStoreState, CleanedMaterialItem, CleaningBatchMetrics } from "@/lib/types";
 import { CPSE_PROFILES } from "@/lib/mockData";
 import { BackendStatusBadge } from "@/components/shared/BackendStatusBadge";
@@ -182,7 +182,7 @@ export default function UploadDataPage() {
 
   // Execute fallback client-side pipeline if backend is unreachable
   const runFallbackPipeline = (datasetToProcess: ParsedDataset) => {
-    const items: CleanedMaterialItem[] = datasetToProcess.records.map((rec, idx) => {
+    const baseItems = datasetToProcess.records.map((rec, idx) => {
       const sim = cleanMaterialDescription(rec.materialDescription);
       const changes: string[] = ["Converted text to lowercase", "Removed unnecessary special characters"];
 
@@ -206,7 +206,7 @@ export default function UploadDataPage() {
         rawDescription: rec.materialDescription,
         cleanedDescription: sim.cleaned.toLowerCase(),
         changesMade: changes,
-        processingStatus: "Cleaned Successfully",
+        processingStatus: "Cleaned Successfully" as const,
         isModified,
         requiresReview: rec.hasMissingFields,
         category: rec.specification || "General",
@@ -214,6 +214,31 @@ export default function UploadDataPage() {
         rawRow: rec.rawRow,
       };
     });
+
+    const clustered = clusterAndAssignNationalCodes(
+      baseItems.map((b) => ({
+        ...b,
+        materialDescription: b.rawDescription,
+      }))
+    );
+
+    const items: CleanedMaterialItem[] = clustered.map((c, idx) => ({
+      ...baseItems[idx],
+      nationalMaterialCode: c.nationalMaterialCode,
+      equivalenceGroupId: c.equivalenceGroupId,
+      standardizedDescription: c.standardizedDescription,
+      aiEquivalenceResult: c.aiEquivalenceResult,
+      confidenceScore: c.confidenceScore,
+      rawRow: {
+        ...baseItems[idx].rawRow,
+        Standard_Material_ID: c.nationalMaterialCode,
+        national_material_code: c.nationalMaterialCode,
+        Equivalence_Group_ID: c.equivalenceGroupId,
+        equivalence_group_id: c.equivalenceGroupId,
+        Standardized_Material_Description: c.standardizedDescription,
+        AI_Equivalence_Result: c.aiEquivalenceResult,
+      },
+    }));
 
     const modifiedCount = items.filter((i) => i.isModified).length;
     const reviewCount = items.filter((i) => i.requiresReview).length;
@@ -249,7 +274,7 @@ export default function UploadDataPage() {
     showToast({
       type: "info",
       title: "Data Cleaned (Local Engine)",
-      message: `Processed ${items.length} records through 7-step deterministic rules.`,
+      message: `Processed ${items.length} records through 7-step deterministic rules & cross-enterprise clustering.`,
     });
     router.push("/ai-standardization/data-cleaning");
   };

@@ -10,7 +10,7 @@ import {
   BackendCSVProcessResponse,
   ParsedDataset,
 } from "./types";
-import { cleanMaterialDescription } from "./cleaningRules";
+import { cleanMaterialDescription, clusterAndAssignNationalCodes } from "./cleaningRules";
 
 const CLEANING_STORAGE_KEY = "sih_latest_cleaning_results";
 
@@ -70,8 +70,8 @@ export function transformBackendResponseToCleaningState(
   let modifiedCount = 0;
   let reviewCount = 0;
 
-  const items: CleanedMaterialItem[] = records.map((rec, idx) => {
-    // Extract material code with fallback heuristics
+  // First pass: extract base item fields
+  const baseItems = records.map((rec, idx) => {
     const materialCode =
       rec.material_id ||
       rec.material_code ||
@@ -80,7 +80,6 @@ export function transformBackendResponseToCleaningState(
       rec.code ||
       `MAT-${String(idx + 1).padStart(4, "0")}`;
 
-    // Extract CPSE enterprise name
     const cpse =
       rec.cpse_organization ||
       rec.cpse ||
@@ -89,7 +88,6 @@ export function transformBackendResponseToCleaningState(
       sourceCPSE ||
       "ONGC";
 
-    // Extract raw description
     const rawDesc =
       rec[summary.detected_description_column] ||
       rec.material_description ||
@@ -138,9 +136,48 @@ export function transformBackendResponseToCleaningState(
       requiresReview,
       category: rec.category || rec.classification || "General",
       unit: rec.unit_of_measure || rec.unit || rec.uom || "",
+      nationalMaterialCode: rec.national_material_code || rec.Standard_Material_ID || undefined,
+      equivalenceGroupId: rec.equivalence_group_id || rec.Equivalence_Group_ID || undefined,
+      standardizedDescription: rec.standardized_material_description || rec.Standardized_Material_Description || undefined,
+      aiEquivalenceResult: rec.ai_equivalence_result || rec.AI_Equivalence_Result || rec.Match_Reason || undefined,
+      confidenceScore: rec.Match_Score || (rec.confidence_score ? Number(rec.confidence_score) : 98.0),
       rawRow: rec,
     };
   });
+
+  // Check if national material codes were already provided by backend
+  const hasBackendCodes = baseItems.every((i) => Boolean(i.nationalMaterialCode));
+
+  let items: CleanedMaterialItem[];
+  if (hasBackendCodes) {
+    items = baseItems;
+  } else {
+    // Run cross-enterprise clustering on client side
+    const clustered = clusterAndAssignNationalCodes(
+      baseItems.map((b) => ({
+        ...b,
+        materialDescription: b.rawDescription,
+      }))
+    );
+
+    items = clustered.map((c, idx) => ({
+      ...baseItems[idx],
+      nationalMaterialCode: c.nationalMaterialCode,
+      equivalenceGroupId: c.equivalenceGroupId,
+      standardizedDescription: c.standardizedDescription,
+      aiEquivalenceResult: c.aiEquivalenceResult,
+      confidenceScore: c.confidenceScore,
+      rawRow: {
+        ...baseItems[idx].rawRow,
+        Standard_Material_ID: c.nationalMaterialCode,
+        national_material_code: c.nationalMaterialCode,
+        Equivalence_Group_ID: c.equivalenceGroupId,
+        equivalence_group_id: c.equivalenceGroupId,
+        Standardized_Material_Description: c.standardizedDescription,
+        AI_Equivalence_Result: c.aiEquivalenceResult,
+      },
+    }));
+  }
 
   const total = items.length;
   const successCount = items.filter((i) => i.processingStatus === "Cleaned Successfully" || i.processingStatus === "Unchanged").length;
@@ -266,7 +303,7 @@ export function generateDefaultCleaningResults(): CleaningStoreState {
     },
   ];
 
-  const items: CleanedMaterialItem[] = sampleRawItems.map((item, idx) => {
+  const baseItems = sampleRawItems.map((item, idx) => {
     // Generate deterministic 7-step pipeline transformation
     const sim = cleanMaterialDescription(item.raw);
     const changes: string[] = [
@@ -302,7 +339,7 @@ export function generateDefaultCleaningResults(): CleaningStoreState {
       rawDescription: item.raw,
       cleanedDescription: cleanedLower,
       changesMade: changes,
-      processingStatus: "Cleaned Successfully",
+      processingStatus: "Cleaned Successfully" as const,
       isModified: true,
       requiresReview: false,
       category: item.category,
@@ -316,6 +353,31 @@ export function generateDefaultCleaningResults(): CleaningStoreState {
       },
     };
   });
+
+  const clustered = clusterAndAssignNationalCodes(
+    baseItems.map((b) => ({
+      ...b,
+      materialDescription: b.rawDescription,
+    }))
+  );
+
+  const items: CleanedMaterialItem[] = clustered.map((c, idx) => ({
+    ...baseItems[idx],
+    nationalMaterialCode: c.nationalMaterialCode,
+    equivalenceGroupId: c.equivalenceGroupId,
+    standardizedDescription: c.standardizedDescription,
+    aiEquivalenceResult: c.aiEquivalenceResult,
+    confidenceScore: c.confidenceScore,
+    rawRow: {
+      ...baseItems[idx].rawRow,
+      Standard_Material_ID: c.nationalMaterialCode,
+      national_material_code: c.nationalMaterialCode,
+      Equivalence_Group_ID: c.equivalenceGroupId,
+      equivalence_group_id: c.equivalenceGroupId,
+      Standardized_Material_Description: c.standardizedDescription,
+      AI_Equivalence_Result: c.aiEquivalenceResult,
+    },
+  }));
 
   const metrics: CleaningBatchMetrics = {
     totalRecords: items.length,

@@ -5,9 +5,21 @@ Executes a 7-step traceable pipeline and generates complete transformation audit
 
 import io
 import re
+import sys
 import time
+from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 import pandas as pd
+
+backend_root = Path(__file__).resolve().parent.parent.parent
+if str(backend_root) not in sys.path:
+    sys.path.insert(0, str(backend_root))
+
+try:
+    from material_standardizer import RawMaterialRecord, run_pipeline as run_std_pipeline
+except ImportError:
+    RawMaterialRecord = None
+    run_std_pipeline = None
 
 from app.config.settings import settings
 from app.models.schemas import (
@@ -289,7 +301,17 @@ class PreprocessingService:
         success_count = 0
         error_count = 0
 
-        for val in df[target_col]:
+        cols = {str(c).lower().strip(): c for c in df.columns}
+        # Auto-detect CPSE column
+        detected_cpse = next((cols[k] for k in cols if any(x in k for x in ["cpse", "org", "enterprise", "company"])), None)
+        # Auto-detect Material Code column
+        detected_code = next((cols[k] for k in cols if any(x in k for x in ["material_code", "item_code", "mat_code", "material_id", "code", "id"])), None)
+        # Auto-detect Specification column
+        detected_spec = next((cols[k] for k in cols if any(x in k for x in ["spec", "specification", "technical"])), None)
+
+        raw_records = []
+        for idx, row in df.iterrows():
+            val = row[target_col]
             res = self.process(val)
             cleaned_descriptions.append(res.cleaned_description)
             changes_list.append(res.changes)
@@ -300,10 +322,41 @@ class PreprocessingService:
             else:
                 error_count += 1
 
+            cpse_val = str(row[detected_cpse]) if detected_cpse and pd.notna(row.get(detected_cpse)) else ""
+            code_val = str(row[detected_code]) if detected_code and pd.notna(row.get(detected_code)) else f"MAT-{idx+1:04d}"
+            desc_val = str(val) if pd.notna(val) else ""
+            spec_val = str(row[detected_spec]) if detected_spec and pd.notna(row.get(detected_spec)) else ""
+
+            if RawMaterialRecord:
+                raw_records.append(RawMaterialRecord(
+                    cpse_name=cpse_val,
+                    material_code=code_val,
+                    material_description=desc_val,
+                    specification=spec_val,
+                ))
+
         # Preserve original columns and append new fields
         df["cleaned_description"] = cleaned_descriptions
         df["changes_made"] = changes_list
         df["processing_status"] = statuses
+
+        # Execute cross-enterprise clustering and National Material Code assignment
+        if run_std_pipeline and raw_records:
+            try:
+                std_recs, _, _ = run_std_pipeline(raw_records)
+                df["Standard_Material_ID"] = [r.Standard_Material_ID for r in std_recs]
+                df["national_material_code"] = [r.Standard_Material_ID for r in std_recs]
+                df["Equivalence_Group_ID"] = [r.Equivalence_Group_ID for r in std_recs]
+                df["equivalence_group_id"] = [r.Equivalence_Group_ID for r in std_recs]
+                df["Standardized_Material_Description"] = [r.Standardized_Material_Description for r in std_recs]
+                df["standardized_material_description"] = [r.Standardized_Material_Description for r in std_recs]
+                df["AI_Equivalence_Result"] = [r.Match_Reason for r in std_recs]
+                df["ai_equivalence_result"] = [r.Match_Reason for r in std_recs]
+                df["Match_Reason"] = [r.Match_Reason for r in std_recs]
+                df["Match_Confidence"] = [r.Match_Confidence for r in std_recs]
+                df["Match_Score"] = [r.Match_Score for r in std_recs]
+            except Exception as cluster_err:
+                print(f"Clustering warning: {cluster_err}")
 
         # Replace NaN values in the dataframe with None for JSON serialization
         records = df.where(pd.notnull(df), None).to_dict(orient="records")
@@ -325,3 +378,4 @@ class PreprocessingService:
 
 # Global singleton instance
 preprocessing_service = PreprocessingService()
+

@@ -1,0 +1,10 @@
+Standard_Material_ID,Standardized_Material_Description,CPSE_Name,Original_Material_Code,Original_Description,Match_Score,AI_Equivalence_Result
+NMC-BOLT-00001,Stainless Steel Hexagonal Bolt M10 x 50 mm,ONGC,MAT-001,SS HEX-BOLT M10X50 MM!!!,100.0,Same (Verified Canonical Entity)
+NMC-PLT-00002,Mild Steel Plate 2500 x 10000 mm Grade IS 2062 BR,BHEL,MAT-002,MS PLT 25MM THK IS 2062 BR 2500X10000MM,100.0,Same (Verified Canonical Entity)
+NMC-FLG-00003,Carbon Steel Weld Neck Raised Face Flange 4 inch Grade ASTM A105 / A105 (Class 150 | SCH 40),NTPC,MAT-003,"CS FLG WNRF 150# 4"" SCH 40 ASTM A105",100.0,Same (Verified Canonical Entity)
+NMC-VLV-00004,Stainless Steel Ball Valve 2 inch Grade SS316 (Class 300),IOCL,MAT-004,"BALL VLV 2"" 300# FLGD END BODY A216 WCB TRIM SS316",100.0,Same (Verified Canonical Entity)
+NMC-PIPE-00005,Galvanized Iron Pipe 50 mm Grade CL-B,GAIL,MAT-005,GI PIPE 50MM DIA CL-B CONFORMING TO IS:1239,100.0,Same (Verified Canonical Entity)
+NMC-BUS-00006,Copper Busbar 50 x 10 mm,SAIL,MAT-006,CU BUSBAR 50X10MM ELEC GRADE 99.9% PURITY,100.0,Same (Verified Canonical Entity)
+NMC-GSK-00007,Stainless Steel Spiral Wound Gasket 3 inch Grade SS316 (Class 600),ONGC,MAT-008,"GASKET SPIRAL WOUND 3"" 600# HOOP SS316",100.0,Same (Verified Canonical Entity)
+NMC-CABL-00008,XLPE Cable 4 Core x 4 sq mm (1.1 kV),BHEL,MAT-009,COPPER CABLE 4 CORE 4SQMM XLPE INSULATED 1.1KV,100.0,Same (Verified Canonical Entity)
+NMC-NUT-00009,Stainless Steel Hexagonal Nut M12 x 1.75 mm,IOCL,MAT-010,STAINLESS STEEL HEX NUT M12X1.75 MM,100.0,Same (Verified Canonical Entity)

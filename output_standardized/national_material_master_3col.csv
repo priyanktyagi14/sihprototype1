@@ -1,0 +1,11 @@
+National Material Code,Standardized Material Description,AI Equivalence Result
+NMC-BOLT-00001,Stainless Steel Hexagonal Bolt M10 x 50 mm,Same (Verified Canonical Entity)
+NMC-PLT-00002,Mild Steel Plate 2500 x 10000 mm Grade IS 2062 BR,Same (Verified Canonical Entity)
+NMC-FLG-00003,Carbon Steel Weld Neck Raised Face Flange 4 inch Grade ASTM A105 / A105 (Class 150 | SCH 40),Same (Verified Canonical Entity)
+NMC-VLV-00004,Stainless Steel Ball Valve 2 inch Grade SS316 (Class 300),Same (Verified Canonical Entity)
+NMC-PIPE-00005,Galvanized Iron Pipe 50 mm Grade CL-B,Same (Verified Canonical Entity)
+NMC-BUS-00006,Copper Busbar 50 x 10 mm,Same (Verified Canonical Entity)
+NMC-GSK-00007,Stainless Steel Spiral Wound Gasket 3 inch Grade SS316 (Class 600),Same (Verified Canonical Entity)
+NMC-CABL-00008,XLPE Cable 4 Core x 4 sq mm (1.1 kV),Same (Verified Canonical Entity)
+NMC-NUT-00009,Stainless Steel Hexagonal Nut M12 x 1.75 mm,Same (Verified Canonical Entity)
+REVIEW_REQUIRED,Deep Groove Ball Bearing 6205-2RS1/C3,Potentially Same (Pending Validation: Bearing has specialized clearance/seal suffix (6205-2RS1/C3) requiring engineering validation)

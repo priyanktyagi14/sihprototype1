@@ -178,6 +178,11 @@ export interface CleanedMaterialItem {
   requiresReview: boolean;
   category?: string;
   unit?: string;
+  nationalMaterialCode?: string;
+  equivalenceGroupId?: string;
+  standardizedDescription?: string;
+  aiEquivalenceResult?: string;
+  confidenceScore?: number;
   rawRow: Record<string, any>;
 }
 
