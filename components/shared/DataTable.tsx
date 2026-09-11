@@ -78,16 +78,16 @@ export const DataTable: React.FC<DataTableProps> = ({
   }, [filteredData, currentPage, pageSize]);
 
   return (
-    <div className="bg-white rounded-xl border border-slate-200 shadow-xs overflow-hidden">
+    <div className="bg-white rounded-2xl border border-[#EDE9FE] shadow-xs overflow-hidden">
       {/* Table Header / Toolbar */}
       <div className="p-4 sm:p-5 border-b border-slate-100 flex flex-col lg:flex-row lg:items-center justify-between gap-4">
         <div>
-          {title && <h3 className="text-base font-semibold text-slate-900">{title}</h3>}
+          {title && <h3 className="text-sm font-bold text-[#0F172A] uppercase tracking-wider">{title}</h3>}
           {subtitle ? (
-            <p className="text-xs sm:text-sm text-slate-500 mt-0.5">{subtitle}</p>
+            <p className="text-xs text-slate-500 mt-0.5">{subtitle}</p>
           ) : (
             <p className="text-xs text-slate-500 mt-0.5">
-              Showing <span className="font-medium text-slate-800">{filteredData.length}</span> records
+              Showing <span className="font-semibold text-slate-800">{filteredData.length}</span> records
             </p>
           )}
         </div>
@@ -96,7 +96,7 @@ export const DataTable: React.FC<DataTableProps> = ({
         <div className="flex flex-wrap items-center gap-2.5">
           {/* Search Input */}
           <div className="relative min-w-[220px]">
-            <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+            <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
             <input
               type="text"
               placeholder="Search code, desc..."
@@ -105,7 +105,7 @@ export const DataTable: React.FC<DataTableProps> = ({
                 setSearchQuery(e.target.value);
                 setCurrentPage(1);
               }}
-              className="w-full pl-9 pr-3 py-1.5 text-xs sm:text-sm rounded-lg border border-slate-200 bg-slate-50/60 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-colors"
+              className="w-full pl-9 pr-3 py-1.5 text-xs sm:text-sm rounded-xl border border-slate-200 bg-slate-50/60 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#7C3AED]/20 focus:border-[#7C3AED] transition-colors"
             />
           </div>
 
@@ -117,7 +117,7 @@ export const DataTable: React.FC<DataTableProps> = ({
               setCurrentPage(1);
             }}
             aria-label="Filter by CPSE enterprise"
-            className="px-2.5 py-1.5 text-xs sm:text-sm rounded-lg border border-slate-200 bg-slate-50/60 focus:bg-white text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
+            className="px-2.5 py-1.5 text-xs sm:text-sm rounded-xl border border-slate-200 bg-slate-50/60 focus:bg-white text-slate-700 font-semibold focus:outline-none focus:ring-2 focus:ring-[#7C3AED]/20"
           >
             <option value="ALL">All CPSEs</option>
             <option value="ONGC">ONGC</option>
@@ -137,7 +137,7 @@ export const DataTable: React.FC<DataTableProps> = ({
               setCurrentPage(1);
             }}
             aria-label="Filter by processing status"
-            className="px-2.5 py-1.5 text-xs sm:text-sm rounded-lg border border-slate-200 bg-slate-50/60 focus:bg-white text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
+            className="px-2.5 py-1.5 text-xs sm:text-sm rounded-xl border border-slate-200 bg-slate-50/60 focus:bg-white text-slate-700 font-semibold focus:outline-none focus:ring-2 focus:ring-[#7C3AED]/20"
           >
             <option value="ALL">All Statuses</option>
             <option value="cleaned">Cleaned</option>

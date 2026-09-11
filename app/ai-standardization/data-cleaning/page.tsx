@@ -136,35 +136,40 @@ export default function DataCleaningResultsPage() {
         }
       />
 
-      {/* 2. BATCH CONTEXT INFO STRIP */}
-      <div className="p-3.5 rounded-2xl bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white shadow-xs border border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
+      {/* 2. RUN SUMMARY HEADER */}
+      <div className="p-4 sm:p-5 rounded-2xl bg-white text-slate-800 shadow-xs border border-[#EDE9FE] flex flex-col sm:flex-row sm:items-center justify-between gap-4 text-xs">
         <div className="flex items-center gap-3">
-          <div className="w-7 h-7 rounded-lg bg-indigo-500/20 border border-indigo-500/30 flex items-center justify-center text-indigo-300 shrink-0">
-            <FileSpreadsheet className="w-4 h-4" />
+          <div className="w-9 h-9 rounded-xl bg-[#F3E8FF] border border-[#EDE9FE] flex items-center justify-center text-[#582C87] shrink-0">
+            <FileSpreadsheet className="w-5 h-5" />
           </div>
           <div className="space-y-0.5">
-            <div className="flex items-center gap-2">
-              <span className="text-slate-400">Active Dataset:</span>
-              <strong className="text-white font-mono">{cleaningState.datasetName}</strong>
-              {cleaningState.metrics.isFallbackMode && (
-                <span className="text-[10px] px-1.5 py-0.2 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30 font-bold">
-                  Client-Side Engine
+            <div className="flex items-center gap-2 flex-wrap">
+              <span className="text-slate-500 font-medium">Batch Metadata:</span>
+              <strong className="text-[#0F172A] font-mono font-bold">{cleaningState.datasetName}</strong>
+              {cleaningState.metrics.isFallbackMode ? (
+                <span className="text-[10px] px-2 py-0.2 rounded-full bg-purple-50 text-[#582C87] border border-[#EDE9FE] font-bold">
+                  Deterministic Rule Engine
+                </span>
+              ) : (
+                <span className="text-[10px] px-2 py-0.2 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 font-bold">
+                  FastAPI Live Engine
                 </span>
               )}
             </div>
-            <p className="text-[11px] text-slate-300">
-              Auto-detected description column: <code className="bg-indigo-900/60 px-1 py-0.2 rounded font-mono text-indigo-200">{cleaningState.metrics.detectedDescriptionColumn}</code>
+            <p className="text-[11px] text-slate-500">
+              Source column mapped: <code className="bg-slate-100 text-[#582C87] px-1.5 py-0.2 rounded font-mono font-bold">{cleaningState.metrics.detectedDescriptionColumn}</code>
             </p>
           </div>
         </div>
 
-        <div className="flex items-center gap-4 text-slate-300 text-[11px] self-end sm:self-auto shrink-0">
-          <div>
-            Batch Runtime: <strong className="text-emerald-400 font-mono">{cleaningState.metrics.processingTimeMs} ms</strong>
+        <div className="flex items-center gap-4 text-xs self-start sm:self-auto shrink-0 border-t sm:border-t-0 pt-2 sm:pt-0 border-slate-100">
+          <div className="px-3 py-1.5 rounded-xl bg-slate-50 border border-slate-100">
+            <span className="text-[10px] text-slate-400 block uppercase font-bold">Processing Latency</span>
+            <strong className="text-[#0F172A] font-mono font-bold">{cleaningState.metrics.processingTimeMs} ms</strong>
           </div>
-          <span>•</span>
-          <div>
-            Success Rate: <strong className="text-indigo-300 font-mono">{cleaningState.metrics.successRate}%</strong>
+          <div className="px-3 py-1.5 rounded-xl bg-purple-50/50 border border-[#EDE9FE]">
+            <span className="text-[10px] text-[#582C87] block uppercase font-bold">Deterministic Match</span>
+            <strong className="text-[#582C87] font-mono font-bold">{cleaningState.metrics.successRate}% Score</strong>
           </div>
         </div>
       </div>

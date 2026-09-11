@@ -26,56 +26,52 @@ export const CleaningSummaryCards: React.FC<CleaningSummaryCardsProps> = ({
   const cards = [
     {
       id: "all",
-      title: "Total Records Processed",
-      value: metrics.totalRecords.toLocaleString(),
+      title: "Batch Ingested",
+      value: `${metrics.totalRecords.toLocaleString()} rec`,
       percentage: "100%",
-      subtext: `Batch runtime: ${metrics.processingTimeMs} ms`,
+      subtext: `Runtime: ${metrics.processingTimeMs} ms`,
       icon: Layers,
-      color: "indigo",
-      bgGradient: "from-indigo-500/10 via-indigo-500/5 to-transparent",
-      borderColor: activeFilter === "all" ? "border-indigo-500 ring-2 ring-indigo-500/20" : "border-slate-200",
-      textColor: "text-indigo-600",
-      iconBg: "bg-indigo-50 text-indigo-600 border border-indigo-100",
-      badge: "Ingestion Batch",
+      color: "purple",
+      borderColor: activeFilter === "all" ? "border-[#582C87] ring-2 ring-[#7C3AED]/20" : "border-[#EDE9FE]",
+      textColor: "text-[#582C87]",
+      iconBg: "bg-[#F3E8FF] text-[#582C87] border border-[#EDE9FE]",
+      badge: "Ingestion Queue",
     },
     {
       id: "cleaned",
-      title: "Successfully Cleaned",
-      value: metrics.successfullyCleaned.toLocaleString(),
+      title: "Deterministic Match",
+      value: `${metrics.successfullyCleaned.toLocaleString()} rec`,
       percentage: `${metrics.successRate}%`,
-      subtext: "Parsed & normalized to standards",
+      subtext: "Parsed to National taxonomy",
       icon: CheckCircle2,
       color: "emerald",
-      bgGradient: "from-emerald-500/10 via-emerald-500/5 to-transparent",
-      borderColor: activeFilter === "cleaned" ? "border-emerald-500 ring-2 ring-emerald-500/20" : "border-slate-200",
+      borderColor: activeFilter === "cleaned" ? "border-emerald-500 ring-2 ring-emerald-500/20" : "border-[#EDE9FE]",
       textColor: "text-emerald-600",
       iconBg: "bg-emerald-50 text-emerald-600 border border-emerald-100",
-      badge: "100% Deterministic",
+      badge: "Rule Engine",
     },
     {
       id: "modified",
-      title: "Records Modified",
-      value: metrics.recordsModified.toLocaleString(),
+      title: "Standardized",
+      value: `${metrics.recordsModified.toLocaleString()} rec`,
       percentage: `${metrics.modifiedRate}%`,
-      subtext: "Abbreviations & units standardized",
+      subtext: "Units, abbreviations normalized",
       icon: Wand2,
-      color: "blue",
-      bgGradient: "from-blue-500/10 via-blue-500/5 to-transparent",
-      borderColor: activeFilter === "modified" ? "border-blue-500 ring-2 ring-blue-500/20" : "border-slate-200",
-      textColor: "text-blue-600",
-      iconBg: "bg-blue-50 text-blue-600 border border-blue-100",
+      color: "violet",
+      borderColor: activeFilter === "modified" ? "border-[#7C3AED] ring-2 ring-[#7C3AED]/20" : "border-[#EDE9FE]",
+      textColor: "text-[#7C3AED]",
+      iconBg: "bg-purple-50 text-[#7C3AED] border border-purple-100",
       badge: "Transformed",
     },
     {
       id: "review",
-      title: "Records Requiring Review",
-      value: metrics.recordsRequiringReview.toLocaleString(),
+      title: "Requires Review",
+      value: `${metrics.recordsRequiringReview.toLocaleString()} rec`,
       percentage: `${metrics.reviewRate}%`,
-      subtext: metrics.recordsRequiringReview === 0 ? "Zero anomalies flagged" : "Missing fields / anomalies",
+      subtext: metrics.recordsRequiringReview === 0 ? "Zero edge anomalies" : "HITL verification alert",
       icon: AlertTriangle,
       color: "amber",
-      bgGradient: "from-amber-500/10 via-amber-500/5 to-transparent",
-      borderColor: activeFilter === "review" ? "border-amber-500 ring-2 ring-amber-500/20" : "border-slate-200",
+      borderColor: activeFilter === "review" ? "border-amber-500 ring-2 ring-amber-500/20" : "border-[#EDE9FE]",
       textColor: "text-amber-600",
       iconBg: "bg-amber-50 text-amber-600 border border-amber-100",
       badge: metrics.recordsRequiringReview === 0 ? "Clean" : "Flagged",
@@ -93,27 +89,27 @@ export const CleaningSummaryCards: React.FC<CleaningSummaryCardsProps> = ({
             className={`relative overflow-hidden rounded-2xl bg-white p-5 border shadow-xs transition-all duration-200 hover:shadow-md cursor-pointer group ${card.borderColor}`}
           >
             {/* Top row: Title and Icon */}
-            <div className="flex items-center justify-between pb-3">
+            <div className="flex items-center justify-between pb-2.5">
               <span className="text-xs font-bold uppercase tracking-wider text-slate-500">
                 {card.title}
               </span>
-              <div className={`w-9 h-9 rounded-xl flex items-center justify-center transition-transform group-hover:scale-110 ${card.iconBg}`}>
-                <Icon className="w-5 h-5" />
+              <div className={`w-8 h-8 rounded-xl flex items-center justify-center transition-transform group-hover:scale-105 ${card.iconBg}`}>
+                <Icon className="w-4 h-4" />
               </div>
             </div>
 
-            {/* Middle row: Big Metric Value & Percentage Badge */}
+            {/* Middle row: Metric Value & Percentage Badge */}
             <div className="flex items-baseline justify-between gap-2 mt-1">
-              <span className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+              <span className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">
                 {card.value}
               </span>
               <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-bold ${
                 card.color === "emerald"
-                  ? "bg-emerald-100 text-emerald-800"
-                  : card.color === "blue"
-                  ? "bg-blue-100 text-blue-800"
+                  ? "bg-emerald-50 text-emerald-700 border border-emerald-200"
+                  : card.color === "violet" || card.color === "purple"
+                  ? "bg-[#F3E8FF] text-[#582C87] border border-[#EDE9FE]"
                   : card.color === "amber"
-                  ? "bg-amber-100 text-amber-800"
+                  ? "bg-amber-50 text-amber-800 border border-amber-200"
                   : "bg-slate-100 text-slate-800"
               }`}>
                 {card.percentage}
@@ -122,8 +118,8 @@ export const CleaningSummaryCards: React.FC<CleaningSummaryCardsProps> = ({
 
             {/* Bottom row: Subtext info */}
             <div className="mt-3 pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
-              <span className="truncate">{card.subtext}</span>
-              <span className="text-[10px] font-semibold text-slate-400 bg-slate-50 px-1.5 py-0.5 rounded">
+              <span className="truncate text-[11px]">{card.subtext}</span>
+              <span className="text-[10px] font-semibold text-[#582C87] bg-purple-50 px-1.5 py-0.5 rounded border border-purple-100">
                 {card.badge}
               </span>
             </div>
@@ -133,3 +129,4 @@ export const CleaningSummaryCards: React.FC<CleaningSummaryCardsProps> = ({
     </div>
   );
 };
+

@@ -18,9 +18,9 @@ export const AIPipelineProgress: React.FC = () => {
   const getIcon = (iconName: string, isActive: boolean) => {
     switch (iconName) {
       case "UploadCloud":
-        return <UploadCloud className="w-4 h-4 text-blue-600" />;
+        return <UploadCloud className="w-4 h-4 text-[#582C87]" />;
       case "Sparkles":
-        return <Sparkles className="w-4 h-4 text-emerald-600 animate-pulse" />;
+        return <Sparkles className="w-4 h-4 text-[#7C3AED] animate-pulse" />;
       case "FileSearch":
       case "Cpu":
         return <Cpu className="w-4 h-4 text-slate-500" />;
@@ -33,13 +33,15 @@ export const AIPipelineProgress: React.FC = () => {
   };
 
   return (
-    <div className="bg-white rounded-xl border border-slate-200 p-5 shadow-xs space-y-4">
+    <div className="bg-white rounded-2xl border border-[#EDE9FE] p-5 shadow-xs space-y-4">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-2 border-b border-slate-100">
         <div>
-          <h3 className="text-base font-semibold text-slate-900">AI Standardization & Harmonization Pipeline</h3>
+          <h3 className="text-sm font-bold text-[#0F172A] uppercase tracking-wider">
+            AI Standardization & Harmonization Pipeline
+          </h3>
           <p className="text-xs text-slate-500 mt-0.5">
-            End-to-end multi-stage architecture from raw legacy CPSE descriptions to National Material Code
+            End-to-end multi-stage architecture from legacy CPSE descriptions to National Material Code
           </p>
         </div>
         <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 text-xs font-semibold self-start sm:self-auto">
@@ -58,13 +60,13 @@ export const AIPipelineProgress: React.FC = () => {
           return (
             <div
               key={stage.id}
-              className={`relative rounded-xl p-4 transition-all duration-200 flex flex-col justify-between space-y-3 ${
+              className={`relative rounded-xl p-3.5 transition-all duration-200 flex flex-col justify-between space-y-3 ${
                 isCleaningActive
-                  ? "bg-gradient-to-b from-emerald-50/80 to-emerald-100/40 border-2 border-emerald-500 shadow-xs ring-2 ring-emerald-500/10"
+                  ? "bg-[#FAF5FF] border-2 border-[#7C3AED] shadow-xs ring-2 ring-[#7C3AED]/10"
                   : isReady
                   ? "bg-slate-50/80 border border-slate-200"
                   : isComingSoon
-                  ? "bg-white border border-slate-200/90 hover:border-slate-300"
+                  ? "bg-white border border-[#EDE9FE] hover:border-slate-300"
                   : "bg-slate-50/40 border border-dashed border-slate-200 opacity-80"
               }`}
             >
@@ -73,9 +75,9 @@ export const AIPipelineProgress: React.FC = () => {
                 <span
                   className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${
                     isCleaningActive
-                      ? "bg-emerald-600 text-white shadow-xs"
+                      ? "bg-[#582C87] text-white shadow-xs"
                       : isReady
-                      ? "bg-blue-600 text-white"
+                      ? "bg-[#7C3AED] text-white"
                       : "bg-slate-200 text-slate-600"
                   }`}
                 >
@@ -85,9 +87,9 @@ export const AIPipelineProgress: React.FC = () => {
                 <div
                   className={`w-8 h-8 rounded-lg flex items-center justify-center border ${
                     isCleaningActive
-                      ? "bg-emerald-100/80 border-emerald-300"
+                      ? "bg-[#F3E8FF] border-[#EDE9FE]"
                       : isReady
-                      ? "bg-blue-50 border-blue-200"
+                      ? "bg-purple-50 border-purple-200"
                       : "bg-slate-100 border-slate-200"
                   }`}
                 >
@@ -104,15 +106,15 @@ export const AIPipelineProgress: React.FC = () => {
               </div>
 
               {/* Status Pill Badge */}
-              <div className="pt-1 border-t border-slate-100/60 flex items-center justify-between">
+              <div className="pt-1 border-t border-slate-100/80 flex items-center justify-between">
                 <span
                   className={`text-[10px] font-semibold px-2 py-0.5 rounded-full ${
                     isCleaningActive
-                      ? "bg-emerald-600 text-white"
+                      ? "bg-[#582C87] text-white"
                       : stage.status === "active"
-                      ? "bg-blue-100 text-blue-800"
+                      ? "bg-purple-100 text-[#582C87]"
                       : stage.status === "coming_soon"
-                      ? "bg-amber-100 text-amber-800 border border-amber-200"
+                      ? "bg-amber-50 text-amber-800 border border-amber-200"
                       : "bg-slate-100 text-slate-600"
                   }`}
                 >
@@ -130,3 +132,4 @@ export const AIPipelineProgress: React.FC = () => {
     </div>
   );
 };
+

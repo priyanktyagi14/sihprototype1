@@ -7,10 +7,16 @@
     --card: #ffffff;
     --card-foreground: #0f172a;
     --border: #e2e8f0;
-    --primary: #1e40af;
+    --border-purple: #ede9fe;
+    --primary: #582c87;
+    --primary-light: #7c3aed;
+    --primary-tint: #f3e8ff;
     --primary-foreground: #ffffff;
-    --muted: #64748b;
-    --muted-bg: #f1f5f9;
+    --muted: #475569;
+    --muted-bg: #f8fafc;
+    --accent-emerald: #10b981;
+    --accent-amber: #f59e0b;
+    --accent-rose: #ef4444;
   }
 
   body {
@@ -23,15 +29,15 @@
 
 /* Custom scrollbar for tables and sidebars */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 5px;
+  height: 5px;
 }
 ::-webkit-scrollbar-track {
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
   background: #cbd5e1;
-  border-radius: 4px;
+  border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
   background: #94a3b8;
@@ -40,3 +46,9 @@
 .table-container {
   overflow-x: auto;
 }
+
+/* Smooth transition defaults */
+* {
+  border-color: var(--border);
+}
+

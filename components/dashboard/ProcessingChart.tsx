@@ -27,30 +27,32 @@ export const ProcessingChart: React.FC = () => {
 
   if (!isMounted) {
     return (
-      <div className="bg-white rounded-xl border border-slate-200 p-6 h-80 flex items-center justify-center">
+      <div className="bg-white rounded-2xl border border-[#EDE9FE] p-6 h-80 flex items-center justify-center">
         <div className="text-xs text-slate-400">Loading enterprise metrics...</div>
       </div>
     );
   }
 
   return (
-    <div className="bg-white rounded-xl border border-slate-200 p-5 shadow-xs space-y-4">
+    <div className="bg-white rounded-2xl border border-[#EDE9FE] p-5 shadow-xs space-y-4">
       {/* Chart Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-2 border-b border-slate-100">
         <div>
-          <h3 className="text-base font-semibold text-slate-900">Processing Overview</h3>
+          <h3 className="text-sm font-bold text-[#0F172A] uppercase tracking-wider">
+            Processing Overview
+          </h3>
           <p className="text-xs text-slate-500 mt-0.5">
             Breakdown of raw ingested records vs standardized and pending verification
           </p>
         </div>
 
         {/* View Switcher */}
-        <div className="flex items-center gap-1 bg-slate-100 p-1 rounded-lg self-start sm:self-auto text-xs">
+        <div className="flex items-center gap-1 bg-slate-100/80 p-1 rounded-xl self-start sm:self-auto text-xs">
           <button
             onClick={() => setChartView("cpse")}
-            className={`flex items-center gap-1.5 px-3 py-1 rounded-md font-medium transition-colors ${
+            className={`flex items-center gap-1.5 px-3 py-1 rounded-lg font-medium transition-colors ${
               chartView === "cpse"
-                ? "bg-white text-slate-900 shadow-xs font-semibold"
+                ? "bg-white text-[#582C87] shadow-xs font-bold"
                 : "text-slate-600 hover:text-slate-900"
             }`}
           >
@@ -59,9 +61,9 @@ export const ProcessingChart: React.FC = () => {
           </button>
           <button
             onClick={() => setChartView("category")}
-            className={`flex items-center gap-1.5 px-3 py-1 rounded-md font-medium transition-colors ${
+            className={`flex items-center gap-1.5 px-3 py-1 rounded-lg font-medium transition-colors ${
               chartView === "category"
-                ? "bg-white text-slate-900 shadow-xs font-semibold"
+                ? "bg-white text-[#582C87] shadow-xs font-bold"
                 : "text-slate-600 hover:text-slate-900"
             }`}
           >
@@ -93,7 +95,7 @@ export const ProcessingChart: React.FC = () => {
               />
               <Legend wrapperStyle={{ fontSize: "12px", paddingTop: "8px" }} />
               <Bar dataKey="raw" name="Raw Ingested" fill="#94a3b8" radius={[4, 4, 0, 0]} />
-              <Bar dataKey="cleaned" name="Cleaned Master" fill="#2563eb" radius={[4, 4, 0, 0]} />
+              <Bar dataKey="cleaned" name="Cleaned Master" fill="#582C87" radius={[4, 4, 0, 0]} />
               <Bar dataKey="pending" name="Pending Review" fill="#f59e0b" radius={[4, 4, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
@@ -144,3 +146,4 @@ export const ProcessingChart: React.FC = () => {
     </div>
   );
 };
+

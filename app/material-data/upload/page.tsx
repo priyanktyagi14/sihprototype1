@@ -420,12 +420,12 @@ export default function UploadDataPage() {
         {/* Left 2 Cols: Main Dropzone & Upload Progress */}
         <div className="lg:col-span-2 space-y-5">
           {/* Ingestion Source Settings */}
-          <div className="bg-white rounded-2xl border border-slate-200 p-5 shadow-xs space-y-4">
+          <div className="bg-white rounded-2xl border border-[#EDE9FE] p-5 shadow-xs space-y-4">
             <div className="flex items-center justify-between pb-3 border-b border-slate-100">
               <div className="flex items-center gap-2">
-                <Database className="w-4 h-4 text-indigo-600" />
-                <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wider">
-                  Ingestion Source Context
+                <Database className="w-4 h-4 text-[#582C87]" />
+                <h3 className="text-xs font-bold text-slate-900 uppercase tracking-wider">
+                  Enterprise Source Context
                 </h3>
               </div>
               <span className="text-xs text-slate-400">Participating Enterprise Mapping</span>
@@ -439,7 +439,7 @@ export default function UploadDataPage() {
                 <select
                   value={selectedCPSE}
                   onChange={(e) => setSelectedCPSE(e.target.value)}
-                  className="w-full px-3 py-2 text-xs sm:text-sm bg-slate-50 border border-slate-200 rounded-xl text-slate-800 font-semibold focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500"
+                  className="w-full px-3 py-2 text-xs sm:text-sm bg-slate-50 border border-slate-200 rounded-xl text-slate-800 font-semibold focus:outline-none focus:ring-2 focus:ring-[#7C3AED]/20 focus:border-[#7C3AED]"
                 >
                   {CPSE_PROFILES.map((c) => (
                     <option key={c.id} value={c.id}>
@@ -456,7 +456,7 @@ export default function UploadDataPage() {
                 <select
                   value={erpSystem}
                   onChange={(e) => setErpSystem(e.target.value)}
-                  className="w-full px-3 py-2 text-xs sm:text-sm bg-slate-50 border border-slate-200 rounded-xl text-slate-800 font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500"
+                  className="w-full px-3 py-2 text-xs sm:text-sm bg-slate-50 border border-slate-200 rounded-xl text-slate-800 font-medium focus:outline-none focus:ring-2 focus:ring-[#7C3AED]/20 focus:border-[#7C3AED]"
                 >
                   <option value="SAP ECC / S4HANA (MARA/MAKT)">SAP ECC / S4HANA (MARA/MAKT)</option>
                   <option value="Oracle ERP Cloud / EBS">Oracle ERP Cloud / EBS</option>
@@ -492,18 +492,18 @@ export default function UploadDataPage() {
         {/* Right 1 Col: Expected Schema Guidelines & Info Card */}
         <div className="space-y-5">
           {/* Expected Headers Guidelines */}
-          <div className="bg-white rounded-2xl border border-slate-200 p-5 shadow-xs space-y-3.5">
+          <div className="bg-white rounded-2xl border border-[#EDE9FE] p-5 shadow-xs space-y-3.5">
             <h4 className="text-xs font-bold uppercase tracking-wider text-slate-700 pb-2 border-b border-slate-100 flex items-center justify-between">
-              <span>Expected Column Format</span>
-              <span className="text-[10px] text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded-full font-bold">
-                Smart Detection
+              <span>Expected Schema Panel</span>
+              <span className="text-[10px] text-[#582C87] bg-[#F3E8FF] px-2 py-0.5 rounded-full font-bold border border-[#EDE9FE]">
+                Real-Time Validation
               </span>
             </h4>
 
             <div className="space-y-2 text-xs">
-              <div className="p-2.5 rounded-xl bg-slate-50 border border-slate-100 space-y-0.5">
+              <div className="p-2.5 rounded-xl bg-purple-50/50 border border-[#EDE9FE] space-y-0.5">
                 <div className="flex items-center justify-between">
-                  <span className="font-mono font-bold text-slate-900">material_description</span>
+                  <span className="font-mono font-bold text-[#582C87]">material_description</span>
                   <span className="text-[10px] text-rose-600 font-bold uppercase">Required</span>
                 </div>
                 <p className="text-slate-500 text-[11px]">Legacy unstructured text string</p>
@@ -512,25 +512,9 @@ export default function UploadDataPage() {
               <div className="p-2.5 rounded-xl bg-slate-50 border border-slate-100 space-y-0.5">
                 <div className="flex items-center justify-between">
                   <span className="font-mono font-bold text-slate-900">material_code</span>
-                  <span className="text-[10px] text-amber-700 font-medium">Or Auto-ID</span>
+                  <span className="text-[10px] text-slate-500 font-medium">Standard / Auto-ID</span>
                 </div>
                 <p className="text-slate-500 text-[11px]">Unique legacy ID (e.g. ONG-1001, BHL-2001)</p>
-              </div>
-
-              <div className="p-2.5 rounded-xl bg-slate-50 border border-slate-100 space-y-0.5">
-                <div className="flex items-center justify-between">
-                  <span className="font-mono font-bold text-slate-900">cpse_name</span>
-                  <span className="text-[10px] text-slate-500">Optional</span>
-                </div>
-                <p className="text-slate-500 text-[11px]">Participating CPSE name (e.g. ONGC, BHEL)</p>
-              </div>
-
-              <div className="p-2.5 rounded-xl bg-slate-50 border border-slate-100 space-y-0.5">
-                <div className="flex items-center justify-between">
-                  <span className="font-mono font-bold text-slate-900">specification</span>
-                  <span className="text-[10px] text-slate-500">Optional</span>
-                </div>
-                <p className="text-slate-500 text-[11px]">Grade, dimension, rating (e.g. SS304, CL150)</p>
               </div>
 
               <div className="p-2.5 rounded-xl bg-slate-50 border border-slate-100 space-y-0.5">
@@ -540,16 +524,24 @@ export default function UploadDataPage() {
                 </div>
                 <p className="text-slate-500 text-[11px]">Legacy UOM (e.g. NOS, PCS, MTR, KG)</p>
               </div>
+
+              <div className="p-2.5 rounded-xl bg-slate-50 border border-slate-100 space-y-0.5">
+                <div className="flex items-center justify-between">
+                  <span className="font-mono font-bold text-slate-900">spec</span>
+                  <span className="text-[10px] text-slate-500">Optional</span>
+                </div>
+                <p className="text-slate-500 text-[11px]">Grade, dimension, rating (e.g. SS304, CL150)</p>
+              </div>
             </div>
           </div>
 
           {/* Smart Pipeline Note */}
-          <div className="p-4 rounded-2xl bg-gradient-to-br from-indigo-500/10 via-blue-500/5 to-slate-50 border border-indigo-100 text-indigo-950 text-xs space-y-2">
-            <div className="flex items-center gap-2 font-bold text-indigo-900">
-              <Sparkles className="w-4 h-4 text-indigo-600" />
+          <div className="p-4 rounded-2xl bg-[#FAF5FF] border border-[#EDE9FE] text-[#582C87] text-xs space-y-2">
+            <div className="flex items-center gap-2 font-bold text-[#582C87]">
+              <Sparkles className="w-4 h-4 text-[#7C3AED]" />
               <span>Automated Alias Recognition</span>
             </div>
-            <p className="text-[11px] leading-relaxed text-indigo-900/80">
+            <p className="text-[11px] leading-relaxed text-slate-600">
               The ingestion engine automatically maps SAP (<code>MATNR</code>, <code>MAKTX</code>, <code>MEINS</code>) and Oracle ERP headers to unified national standard fields.
             </p>
           </div>
