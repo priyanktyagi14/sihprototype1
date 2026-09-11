@@ -3,9 +3,11 @@ services:
   - type: web
     name: sih-fastapi-backend
     runtime: python
+    plan: free
     rootDir: backend
-    buildCommand: pip install -r requirements.txt
+    buildCommand: pip install --upgrade pip && pip install -r requirements.txt
     startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
     envVars:
       - key: PYTHON_VERSION
         value: 3.11.9
@@ -14,11 +16,12 @@ services:
   - type: web
     name: sih-nextjs-frontend
     runtime: node
+    plan: free
     buildCommand: npm install && npm run build
     startCommand: npm start
     envVars:
       - key: NODE_VERSION
-        value: 20.x
+        value: 20.11.0
       - key: NEXT_PUBLIC_API_BASE_URL
-        # Replace this in Render dashboard or link to the backend URL
+        # Provide the public URL of the backend (e.g. https://sih-fastapi-backend.onrender.com)
         sync: false

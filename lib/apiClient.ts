@@ -10,8 +10,21 @@ import {
   StandardizedUploadRecord,
 } from "./types";
 
-export const API_BASE_URL =
-  process.env.NEXT_PUBLIC_API_BASE_URL || "http://127.0.0.1:8000";
+function normalizeApiBaseUrl(url?: string): string {
+  if (!url || typeof url !== "string" || !url.trim()) {
+    return "http://127.0.0.1:8000";
+  }
+  let clean = url.trim().replace(/\/+$/, "");
+  // Remove /docs suffix if copied from Swagger
+  clean = clean.replace(/\/docs$/, "");
+  // If user entered /api at the end, strip it because endpoints are /process/csv etc.
+  if (clean.endsWith("/api")) {
+    clean = clean.replace(/\/api$/, "");
+  }
+  return clean;
+}
+
+export const API_BASE_URL = normalizeApiBaseUrl(process.env.NEXT_PUBLIC_API_BASE_URL);
 
 export class ApiError extends Error {
   status: number;
@@ -157,6 +170,10 @@ export async function cleanCsvFile(
         const errorData = await res.json();
         detailMsg = errorData.detail || errorData.message || detailMsg;
       } catch (_) {}
+
+      if (res.status === 404) {
+        detailMsg = `Backend endpoint 404 Not Found at ${url.toString()}. Check that NEXT_PUBLIC_API_BASE_URL points to your backend service (not frontend) and re-deploy.`;
+      }
       throw new ApiError(detailMsg, res.status);
     }
 
