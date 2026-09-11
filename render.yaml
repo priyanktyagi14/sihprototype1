@@ -1,0 +1,24 @@
+services:
+  # 1. FastAPI Python Backend Service
+  - type: web
+    name: sih-fastapi-backend
+    runtime: python
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.9
+
+  # 2. Next.js Frontend Service
+  - type: web
+    name: sih-nextjs-frontend
+    runtime: node
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    envVars:
+      - key: NODE_VERSION
+        value: 20.x
+      - key: NEXT_PUBLIC_API_BASE_URL
+        # Replace this in Render dashboard or link to the backend URL
+        sync: false
